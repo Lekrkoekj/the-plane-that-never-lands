@@ -1,0 +1,121 @@
+{
+  "_version" : "2.0.0",
+  "_songSampleCount" : 7788646,
+  "_songFrequency" : 44100,
+  "_regions" : [
+    {
+      "_startSampleIndex" : 0,
+      "_endSampleIndex" : 4931182,
+      "_startBeat" : 0,
+      "_endBeat" : 328
+    },
+    {
+      "_startSampleIndex" : 4931182,
+      "_endSampleIndex" : 4942457,
+      "_startBeat" : 328,
+      "_endBeat" : 329
+    },
+    {
+      "_startSampleIndex" : 4942457,
+      "_endSampleIndex" : 5187174,
+      "_startBeat" : 329,
+      "_endBeat" : 345
+    },
+    {
+      "_startSampleIndex" : 5187174,
+      "_endSampleIndex" : 5420645,
+      "_startBeat" : 345,
+      "_endBeat" : 360
+    },
+    {
+      "_startSampleIndex" : 5420645,
+      "_endSampleIndex" : 5435679,
+      "_startBeat" : 360,
+      "_endBeat" : 361
+    },
+    {
+      "_startSampleIndex" : 5435679,
+      "_endSampleIndex" : 5787459,
+      "_startBeat" : 361,
+      "_endBeat" : 384
+    },
+    {
+      "_startSampleIndex" : 5787459,
+      "_endSampleIndex" : 5896412,
+      "_startBeat" : 384,
+      "_endBeat" : 391
+    },
+    {
+      "_startSampleIndex" : 5896412,
+      "_endSampleIndex" : 5916012,
+      "_startBeat" : 391,
+      "_endBeat" : 392
+    },
+    {
+      "_startSampleIndex" : 5916012,
+      "_endSampleIndex" : 6017782,
+      "_startBeat" : 392,
+      "_endBeat" : 397
+    },
+    {
+      "_startSampleIndex" : 6017782,
+      "_endSampleIndex" : 6073487,
+      "_startBeat" : 397,
+      "_endBeat" : 399
+    },
+    {
+      "_startSampleIndex" : 6073487,
+      "_endSampleIndex" : 6105366,
+      "_startBeat" : 399,
+      "_endBeat" : 400
+    },
+    {
+      "_startSampleIndex" : 6105366,
+      "_endSampleIndex" : 6238618,
+      "_startBeat" : 400,
+      "_endBeat" : 407
+    },
+    {
+      "_startSampleIndex" : 6238618,
+      "_endSampleIndex" : 6255689,
+      "_startBeat" : 407,
+      "_endBeat" : 408
+    },
+    {
+      "_startSampleIndex" : 6255689,
+      "_endSampleIndex" : 6272227,
+      "_startBeat" : 408,
+      "_endBeat" : 409
+    },
+    {
+      "_startSampleIndex" : 6272227,
+      "_endSampleIndex" : 6287347,
+      "_startBeat" : 409,
+      "_endBeat" : 410
+    },
+    {
+      "_startSampleIndex" : 6287347,
+      "_endSampleIndex" : 6302912,
+      "_startBeat" : 410,
+      "_endBeat" : 411
+    },
+    {
+      "_startSampleIndex" : 6302912,
+      "_endSampleIndex" : 6351021,
+      "_startBeat" : 411,
+      "_endBeat" : 413
+    },
+    {
+      "_startSampleIndex" : 6351021,
+      "_endSampleIndex" : 6354028,
+      "_startBeat" : 413,
+      "_endBeat" : 414
+    },
+    {
+      "_startSampleIndex" : 6354028,
+      "_endSampleIndex" : 7788646,
+      "_startBeat" : 414,
+      "_endBeat" : 509.424316
+    }
+  ]
+}
