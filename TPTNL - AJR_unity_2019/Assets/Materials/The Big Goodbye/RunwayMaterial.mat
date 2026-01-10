@@ -7,13 +7,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EnvironmentFadeMaterial
-  m_Shader: {fileID: 4800000, guid: 063443f89f788064fae293a0ce51449e, type: 3}
+  m_Name: RunwayMaterial
+  m_Shader: {fileID: 4800000, guid: bd50aedeb2e8746499d91c71ea38a9de, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 1000
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -35,12 +35,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _DitherMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: ef7f07a03d9841740a845331f665cb7d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -56,18 +60,20 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Tex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: aa0b3194070ea174f8d31b66f9579b10, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Ambient: 0
+    - _Alpha: 0.04
+    - _Ambient: 1
+    - _Bloom: 0
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _Darkness: 1
+    - _Cutout: 0.5
     - _DayNightCycle: 1
     - _DetailNormalMapScale: 1
+    - _DitherMaskScale: 40
     - _DstBlend: 0
-    - _Fill: 0.456
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -75,22 +81,16 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _Opacity: 1
     - _Parallax: 0.02
-    - _RadialFeather: 0.2
-    - _RadialRadius: 0.3
-    - _Rotate: 0
     - _SmoothnessTextureChannel: 0
-    - _Softness: 0.269
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Center: {r: 1.02, g: 0.5, b: 0, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorNight: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.4716981, g: 0.3504773, b: 0.246974, a: 0}
+    - _ColorNight: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FadeColor: {r: 0, g: 0, b: 0, a: 1}
     - _LightDir: {r: -1, g: -1, b: 0, a: 1}
-    - _RadialCenter: {r: 0.5, g: 0.5, b: 0, a: 0}
-    - _Radius: {r: 0.35, g: 0.2, b: 0, a: 0}
+    - _LightDirNight: {r: -1, g: 0.3, b: -3.45, a: 1}

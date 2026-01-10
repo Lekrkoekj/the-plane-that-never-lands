@@ -1,11 +1,10 @@
-Shader "Lekrkoekj/TransparentParticleShader"
+Shader "Lekrkoekj/TransparentTextShader (not blocking other objects)"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
-        _Glow ("Glow", Range(0, 1)) = 0
-        _Color    ("Color", Color) = (1,1,1,0)
-        _Opacity ("Opacity", Range(0, 1)) = 1
+        _CurrentTexture ("Current Texture", Range(0,13)) = 0
+        _Opacity("Opacity", Range(0, 1)) = 1
+        _Texture ("Texture", 2D) = "white" {}
     }
     SubShader
     {
@@ -15,7 +14,6 @@ Shader "Lekrkoekj/TransparentParticleShader"
         }
         Blend One OneMinusSrcColor
         ZWrite Off
-        ZTest Always
 
         Pass
         {
@@ -45,11 +43,10 @@ Shader "Lekrkoekj/TransparentParticleShader"
                 UNITY_VERTEX_OUTPUT_STEREO
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
+            float _CurrentTexture;
             float _Opacity;
-            float4 _Color;
-            float _Glow;
+            sampler2D _Texture;
+            float4 _Texture_ST;
 
             v2f vert (appdata v)
             {
@@ -59,16 +56,14 @@ Shader "Lekrkoekj/TransparentParticleShader"
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uv = TRANSFORM_TEX(v.uv, _Texture);
                 return o;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, i.uv);
-                
-                col.a *= _Glow;
-                col *= _Color;
+                fixed4 col = tex2D(_Texture, i.uv);
+                col.a = 0;
                 col *= _Opacity;
                 return col;
             }

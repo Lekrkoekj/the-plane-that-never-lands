@@ -7,13 +7,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EnvironmentFadeMaterial
-  m_Shader: {fileID: 4800000, guid: 063443f89f788064fae293a0ce51449e, type: 3}
+  m_Name: ACLuggageHandleMaterial
+  m_Shader: {fileID: 4800000, guid: bd50aedeb2e8746499d91c71ea38a9de, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 1000
+  m_CustomRenderQueue: 999
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -21,6 +21,10 @@ Material:
     m_TexEnvs:
     - _BumpMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CanvasTex:
+        m_Texture: {fileID: 10309, guid: 0000000000000000f000000000000000, type: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -40,7 +44,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 6ca5daa3415451940921fa7e2c3db9e8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -60,14 +64,13 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Ambient: 0
+    - _Ambient: 1
     - _BumpScale: 1
+    - _CanvasStrength: 0
     - _Cutoff: 0.5
-    - _Darkness: 1
     - _DayNightCycle: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Fill: 0.456
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -75,22 +78,16 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _Opacity: 1
     - _Parallax: 0.02
-    - _RadialFeather: 0.2
-    - _RadialRadius: 0.3
-    - _Rotate: 0
     - _SmoothnessTextureChannel: 0
-    - _Softness: 0.269
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Center: {r: 1.02, g: 0.5, b: 0, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
     - _ColorNight: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FadeColor: {r: 0, g: 0, b: 0, a: 1}
-    - _LightDir: {r: -1, g: -1, b: 0, a: 1}
-    - _RadialCenter: {r: 0.5, g: 0.5, b: 0, a: 0}
-    - _Radius: {r: 0.35, g: 0.2, b: 0, a: 0}
+    - _LightDir: {r: -0.03, g: 4.19, b: 2.78, a: 1}
+    - _LightDirNight: {r: -1, g: -1, b: 0, a: 1}
