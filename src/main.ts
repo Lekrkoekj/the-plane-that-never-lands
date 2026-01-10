@@ -47,6 +47,31 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
 
     /// ---- { ENVIRONMENT } -----
 
+    // Assign all notes to a track
+    if(!chromaOnly) map.allNotes.forEach(note => {
+        note.track.add("allNotes")
+    })
+
+    // Apply custom note prefab to all notes
+    if(!chromaOnly) rm.assignObjectPrefab(map, {
+        colorNotes: {
+            track: "allNotes",
+            asset: prefabs.customnote.path,
+            debrisAsset: prefabs.customnotedebris.path,
+            anyDirectionAsset: prefabs.customnotedot.path
+        },
+        chainHeads: {
+            track: "allNotes",
+            asset: prefabs.customchain.path,
+            debrisAsset: prefabs.customchaindebris.path
+        },
+        chainLinks: {
+            track: "allNotes",
+            asset: prefabs.customchainlink.path,
+            debrisAsset: prefabs.customchainlinkdebris.path
+        }
+    })
+
     // Static Environment Prefabs/Materials
     prefabs.skybox.instantiate(map, 0);
     prefabs.transitionrunwayleft.instantiate(map, 0);
