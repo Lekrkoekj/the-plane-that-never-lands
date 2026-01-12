@@ -72,6 +72,126 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         }
     })
 
+    // Note shadows 
+    if(!chromaOnly) {
+        const shadowPositions = new Set();
+        map.allNotes.forEach(note => {
+            // Create a unique key for this shadow position
+            const key = `${note.beat}-${note.x}`;
+
+            // If a shadow for this column & beat was already spawned → skip
+            if (shadowPositions.has(key)) return;
+            shadowPositions.add(key);
+            let trackName = "noteShadowsFull";
+            if(note.y == 1) trackName = "noteShadowsHalf"
+            else if(note.y == 2) trackName = "noteShadowsFaint"
+            rm.colorNote(map, {
+                beat: note.beat,
+                x: note.x,
+                y: 0,
+                track: trackName,
+                fake: true,
+                disableNoteLook: true,
+                disableNoteGravity: true,
+                spawnEffect: false,
+                uninteractable: true,
+                // animation: {
+                //     localRotation: [[0, 0, 0, 0]]
+                // }
+            })
+        });
+        rm.assignObjectPrefab(map, {
+            colorNotes: {
+                track: "noteShadowsFull",
+                asset: prefabs["custom note shadow full"].path,
+            },
+            chainHeads: {
+                track: "noteShadowsFull",
+                asset: prefabs["custom note shadow full"].path,
+            },
+            chainLinks: {
+                track: "noteShadowsFull",
+                asset: prefabs["custom note shadow full"].path,
+            },
+        })
+        rm.assignObjectPrefab(map, {
+            colorNotes: {
+                track: "noteShadowsHalf",
+                asset: prefabs["custom note shadow half"].path,
+            },
+            chainHeads: {
+                track: "noteShadowsHalf",
+                asset: prefabs["custom note shadow half"].path,
+            },
+            chainLinks: {
+                track: "noteShadowsHalf",
+                asset: prefabs["custom note shadow half"].path,
+            },
+        })
+        rm.assignObjectPrefab(map, {
+            colorNotes: {
+                track: "noteShadowsFaint",
+                asset: prefabs["custom note shadow faint"].path,
+            },
+            chainHeads: {
+                track: "noteShadowsFaint",
+                asset: prefabs["custom note shadow faint"].path,
+            },
+            chainLinks: {
+                track: "noteShadowsFaint",
+                asset: prefabs["custom note shadow faint"].path,
+            },
+        })
+    }
+
+    // Airplane Scene lights
+    // Top left lights
+    if(!chromaOnly) for(let i = 0; i < 4; i++) {
+        let type;
+        if(i == 0) type = 1
+        if(i == 1) type = 6
+        if(i == 2) type = 7
+        if(i == 3) type = 0
+        rm.geometry(map, {
+            type: "Cylinder",
+            material: {
+                shader: "TransparentLight"
+            },
+            components: {
+                ILightWithId: {
+                    type: type,
+                    lightID: 5
+                }
+            },
+            position: [-1.82, 3.481, 4.9354 + 4.9646 * i],
+            rotation: [90, 0, 0],
+            scale: [0.12843, 1.223006, 0.12843]
+        });
+    }
+    // Top right lights
+    if(!chromaOnly) for(let i = 0; i < 4; i++) {
+        let type;
+        if(i == 0) type = 1
+        if(i == 1) type = 6
+        if(i == 2) type = 7
+        if(i == 3) type = 0
+        rm.geometry(map, {
+            type: "Cylinder",
+            material: {
+                shader: "TransparentLight"
+            },
+            components: {
+                ILightWithId: {
+                    type: type,
+                    lightID: 6
+                }
+            },
+            position: [1.82, 3.481, 4.9354 + 4.9646 * i],
+            rotation: [90, 0, 0],
+            scale: [0.12843, 1.223006, 0.12843]
+        });
+    }
+
     // Static Environment Prefabs/Materials
     prefabs.skybox.instantiate(map, 0);
     prefabs.transitionrunwayleft.instantiate(map, 0);
@@ -104,16 +224,16 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
 
     /// ---- { EVENTS } -----
 
-    setEnvironmentFade(2, 2, 1.5, 0, 1/64);
+    setEnvironmentFade(2, 4, 1.5, 0, 1/64);
     
     // Remove airplane environment & transition to street environment
     const cloudParticles = prefabs.cloudparticles.instantiate(map, 88);
     setMaterialOpacity(materials.cloudparticles, 88, 1.5, 0, 1, 1/16);
     setEnvironmentFade(85.5, 4, 0, 1.5, 1/64);
     setMaterialOpacity(materials.transitionrunwaymaterial, 88.5, 1.5, 0, 1, 1/16);
-    airplaneCabin.destroyObject(91);
-    airplaneRunway.destroyObject(91);
-    airplaneSeats.destroyObject(91);
+    airplaneCabin.destroyObject(90);
+    airplaneRunway.destroyObject(90);
+    airplaneSeats.destroyObject(90);
     setMaterialOpacity(materials.cloudparticles, 101, 2, 1, 0, 1/16);
     cloudParticles.destroyObject(104);
     setMaterialOpacity(materials.transitionrunwaymaterial, 100, 2, 1, 0, 1/16);

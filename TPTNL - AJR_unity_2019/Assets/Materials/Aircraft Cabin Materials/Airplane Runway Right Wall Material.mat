@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Airplane Runway Side Material
+  m_Name: Airplane Runway Right Wall Material
   m_Shader: {fileID: 4800000, guid: bd50aedeb2e8746499d91c71ea38a9de, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -90,5 +90,5 @@ Material:
     - _Color: {r: 0.30789426, g: 0.31112763, b: 0.3490566, a: 1}
     - _ColorNight: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _LightDir: {r: 6.91, g: -1.14, b: 2.78, a: 1}
+    - _LightDir: {r: 0.83, g: -2.29, b: 0, a: 1}
     - _LightDirNight: {r: -1, g: -1, b: 0, a: 1}
