@@ -226,7 +226,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
 
     setEnvironmentFade(2, 4, 1.5, 0, 1/64);
     
-    // Remove airplane environment & transition to street environment
+    // Remove airplane environment &
     const cloudParticles = prefabs.cloudparticles.instantiate(map, 88);
     setMaterialOpacity(materials.cloudparticles, 88, 1.5, 0, 1, 1/16);
     setEnvironmentFade(85.5, 4, 0, 1.5, 1/64);
@@ -238,6 +238,11 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     cloudParticles.destroyObject(104);
     setMaterialOpacity(materials.transitionrunwaymaterial, 100, 2, 1, 0, 1/16);
     setEnvironmentFade(101, 2, 1.5, 0, 1/64);
+
+    // Transition to street environment
+    const sidewalk = prefabs.sidewalk.instantiate(map, 100);
+    const treeFences = prefabs["tree fences"].instantiate(map, 100);
+    const road = prefabs.road.instantiate(map, 100);
 }
 
 await Promise.all([
