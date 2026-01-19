@@ -1,5 +1,6 @@
 import * as rm from "https://deno.land/x/remapper@4.2.0/src/mod.ts"
 import * as bundleInfo from '../bundleinfo.json' with { type: 'json' }
+import { setAnimatorProperty } from "https://deno.land/x/remapper@4.2.0/src/builder_functions/beatmap/object/custom_event/vivify.ts";
 
 const pipeline = await rm.createPipeline({ bundleInfo })
 
@@ -45,7 +46,102 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         material.set(map, { _Opacity: to }, beat + duration);
     }
 
+    function setLaserTracks(side: "left" | "right") {
+        if(side == "left") {
+            rm.environment(map, {
+                id: "s.[0]PillarL",
+                lookupMethod: "EndsWith",
+                "track": "laser_L0"
+            })
+            for(let i = 1; i < 9;i++) {
+                rm.environment(map, {
+                    id: `s (${i}).[0]PillarL`,
+                    lookupMethod: "EndsWith",
+                    "track": `laser_L${i}`
+                })
+            }
+        }
+        else {
+            rm.environment(map, {
+                id: "s.[1]PillarR",
+                lookupMethod: "EndsWith",
+                "track": "laser_R0"
+            })
+            for(let i = 1; i < 9; i++) {
+                rm.environment(map, {
+                    id: `s (${i}).[1]PillarR`,
+                    lookupMethod: "EndsWith",
+                    "track": `laser_R${i}`
+                })
+            }
+        }
+    }
+
+    function setLaserPositions(side: "left" | "right") {
+        const airplaneHeightOffset = -0.3;
+        const cityDepthOffset = 5;
+        const d = 500;
+        if(side == "left") {
+            for(let i = 0; i < 9; i++) {
+                rm.animateTrack(map, {
+                    track: `laser_L${i}`,
+                    beat: 0,
+                    duration: d,
+                    animation: {
+                        scale: [
+                            [1, 0.5, 0.5, 0],
+                            [1, 0.5, 0.5, 90/d],
+                            [1, 1, 1, 91/d],
+                        ],
+                        rotation: [
+                            [0, -60.5, 15, 0],             // Airplane Cabin
+                            [0, -60.5, 15, 90/d],          // ^
+                            [60, -100, -90, 91/d],
+                        ],
+                        position: [
+                            [-3, 3.75 + airplaneHeightOffset * (i + 1), 50, 0],          // Airplane Cabin
+                            [-3, 3.75 + airplaneHeightOffset * (i + 1), 50, 90/d],       // ^
+                            [-3.6, -2.1, cityDepthOffset * (i + 1), 91/d],
+                        ]
+                    }
+                });
+            }
+        }
+        else {
+            for(let i = 0; i < 9; i++) {
+                rm.animateTrack(map, {
+                    track: `laser_R${i}`,
+                    beat: 0,
+                    duration: d,
+                    animation: {
+                        scale: [
+                            [1, 0.5, 0.5, 0],
+                            [1, 0.5, 0.5, 90/d],
+                            [1, 1, 1, 91/d],
+                        ],
+                        rotation: [
+                            [0, 60.5, -15, 0],         // Airplane Cabin
+                            [0, 60.5, -15, 90/d],      // ^
+                            [60, 100, 90, 91/d],
+                        ],
+                        position: [
+                            [3, 3.75 + airplaneHeightOffset * (i + 1), 50, 0],          // Airplane Cabin
+                            [3, 3.75 + airplaneHeightOffset * (i + 1), 50, 90/d],       // ^
+                            [3.6, -2.1, cityDepthOffset * (i + 1), 91/d],
+                        ]
+                    }
+                });
+            }
+        }
+    }
+
     /// ---- { ENVIRONMENT } -----
+
+    // Lasers
+    setLaserTracks("left");
+    setLaserTracks("right");
+    setLaserPositions("left");
+    setLaserPositions("right");
 
     // Assign all notes to a track
     if(!chromaOnly) map.allNotes.forEach(note => {
@@ -95,9 +191,6 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
                 disableNoteGravity: true,
                 spawnEffect: false,
                 uninteractable: true,
-                // animation: {
-                //     localRotation: [[0, 0, 0, 0]]
-                // }
             })
         });
         rm.assignObjectPrefab(map, {
@@ -146,12 +239,25 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
 
     // Airplane Scene lights
     // Top left lights
-    if(!chromaOnly) for(let i = 0; i < 4; i++) {
+    if(!chromaOnly) for(let i = 0; i < 7; i++) {
         let type;
+        let id = 5;
         if(i == 0) type = 1
         if(i == 1) type = 6
         if(i == 2) type = 7
         if(i == 3) type = 0
+        if(i == 4) {
+            type = 0;
+            id = 7;
+        }
+        if(i == 5) {
+            type = 0;
+            id = 9;
+        }
+        if(i == 6) {
+            type = 0;
+            id = 11;
+        }
         rm.geometry(map, {
             type: "Cylinder",
             material: {
@@ -160,7 +266,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
             components: {
                 ILightWithId: {
                     type: type,
-                    lightID: 5
+                    lightID: id
                 }
             },
             position: [-1.82, 3.481, 4.9354 + 4.9646 * i],
@@ -169,12 +275,25 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         });
     }
     // Top right lights
-    if(!chromaOnly) for(let i = 0; i < 4; i++) {
+    if(!chromaOnly) for(let i = 0; i < 7; i++) {
         let type;
+        let id = 6;
         if(i == 0) type = 1
         if(i == 1) type = 6
         if(i == 2) type = 7
         if(i == 3) type = 0
+        if(i == 4) {
+            type = 0;
+            id = 8;
+        }
+        if(i == 5) {
+            type = 0;
+            id = 10;
+        }
+        if(i == 6) {
+            type = 0;
+            id = 12;
+        }
         rm.geometry(map, {
             type: "Cylinder",
             material: {
@@ -183,7 +302,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
             components: {
                 ILightWithId: {
                     type: type,
-                    lightID: 6
+                    lightID: id
                 }
             },
             position: [1.82, 3.481, 4.9354 + 4.9646 * i],
@@ -200,11 +319,6 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     materials.environmentfadematerial.set(map, {_Fill: 1.5});
     prefabs.testcube.instantiate(map, 0);
 
-    const airplaneCabin = prefabs["airplane cabin"].instantiate(map, 0);
-    const airplaneRunway = prefabs["airplane runway"].instantiate(map, 0);
-    const airplaneSeats = prefabs.seats.instantiate(map, 0);
-    const clouds = prefabs.clouds.instantiate(map, 0);
-
     // Environment Removals
     if(!chromaOnly) rm.environmentRemoval(map, [
         "Rain",
@@ -217,16 +331,21 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         "Curve",
         "LightRailingSegment",
         "PlayersPlace",
-        "Clouds",
         "Smoke",
+        "Clouds",
         "Mountains"
     ], "Contains")
 
     /// ---- { EVENTS } -----
 
+    // Load airplane environment
+    const airplaneCabin = prefabs["airplane cabin"].instantiate(map, 0);
+    const airplaneRunway = prefabs["airplane runway"].instantiate(map, 0);
+    const airplaneSeats = prefabs.seats.instantiate(map, 0);
+    const clouds = prefabs.clouds.instantiate(map, 0);
     setEnvironmentFade(2, 4, 1.5, 0, 1/64);
     
-    // Remove airplane environment &
+    // Remove airplane scene & start transition
     const cloudParticles = prefabs.cloudparticles.instantiate(map, 88);
     setMaterialOpacity(materials.cloudparticles, 88, 1.5, 0, 1, 1/16);
     setEnvironmentFade(85.5, 4, 0, 1.5, 1/64);
@@ -234,15 +353,37 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     airplaneCabin.destroyObject(90);
     airplaneRunway.destroyObject(90);
     airplaneSeats.destroyObject(90);
-    setMaterialOpacity(materials.cloudparticles, 101, 2, 1, 0, 1/16);
-    cloudParticles.destroyObject(104);
-    setMaterialOpacity(materials.transitionrunwaymaterial, 100, 2, 1, 0, 1/16);
-    setEnvironmentFade(101, 2, 1.5, 0, 1/64);
+    
 
-    // Transition to street environment
+    // Exit transition & load city street scene
+    setMaterialOpacity(materials.cloudparticles, 101, 2, 1, 0, 1/16);
+    setMaterialOpacity(materials.transitionrunwaymaterial, 100, 2, 1, 0, 1/16);
+    setEnvironmentFade(101, 2, 1.5, 0.7, 1/64);
+
     const sidewalk = prefabs.sidewalk.instantiate(map, 100);
+    const sidewalkAcrossRoad = prefabs["sidewalk across road"].instantiate(map, 100);
+    const sidewalk2 = prefabs.sidewalk2.instantiate(map, 100);
     const treeFences = prefabs["tree fences"].instantiate(map, 100);
     const road = prefabs.road.instantiate(map, 100);
+    const houses = prefabs.houses.instantiate(map, 100);
+    const cityClouds = prefabs.cityclouds.instantiate(map, 100);
+
+    // Remove city street scene & start transition
+    setMaterialOpacity(materials.cloudparticles, 200, 1.5, 0, 1, 1/16);
+    setEnvironmentFade(197.5, 4, 0, 1.5, 1/64);
+    setMaterialOpacity(materials.transitionrunwaymaterial, 200.5, 1.5, 0, 1, 1/16);
+    sidewalk.destroyObject(200);
+    sidewalkAcrossRoad.destroyObject(200);
+    sidewalk2.destroyObject(200);
+    treeFences.destroyObject(200);
+    road.destroyObject(200);
+    houses.destroyObject(200);
+    cityClouds.destroyObject(200);
+
+    // Exit transition & load elevator scene
+    setMaterialOpacity(materials.cloudparticles, 213, 2, 1, 0, 1/16);
+    setMaterialOpacity(materials.transitionrunwaymaterial, 212, 2, 1, 0, 1/16);
+    setEnvironmentFade(213, 2, 1.5, 0.7, 1/64);
 }
 
 await Promise.all([
