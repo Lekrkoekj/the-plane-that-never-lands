@@ -360,9 +360,8 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     setMaterialOpacity(materials.transitionrunwaymaterial, 100, 2, 1, 0, 1/16);
     setEnvironmentFade(101, 2, 1.5, 0.7, 1/64);
 
-    const sidewalk = prefabs.sidewalk.instantiate(map, 100);
-    const sidewalkAcrossRoad = prefabs["sidewalk across road"].instantiate(map, 100);
-    const sidewalk2 = prefabs.sidewalk2.instantiate(map, 100);
+    const sidewalks = prefabs.sidewalks.instantiate(map, 100);
+    const cityBuildings = prefabs["city buildings"].instantiate(map, 100);
     const treeFences = prefabs["tree fences"].instantiate(map, 100);
     const road = prefabs.road.instantiate(map, 100);
     const houses = prefabs.houses.instantiate(map, 100);
@@ -372,9 +371,8 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     setMaterialOpacity(materials.cloudparticles, 200, 1.5, 0, 1, 1/16);
     setEnvironmentFade(197.5, 4, 0, 1.5, 1/64);
     setMaterialOpacity(materials.transitionrunwaymaterial, 200.5, 1.5, 0, 1, 1/16);
-    sidewalk.destroyObject(200);
-    sidewalkAcrossRoad.destroyObject(200);
-    sidewalk2.destroyObject(200);
+    sidewalks.destroyObject(200);
+    cityBuildings.destroyObject(200);
     treeFences.destroyObject(200);
     road.destroyObject(200);
     houses.destroyObject(200);
