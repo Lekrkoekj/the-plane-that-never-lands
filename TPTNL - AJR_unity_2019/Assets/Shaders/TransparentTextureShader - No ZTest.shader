@@ -1,4 +1,4 @@
-Shader "Lekrkoekj/TransparentTextureShader"
+Shader "Lekrkoekj/TransparentTextureShader - No ZTest"
 {
     Properties
     {

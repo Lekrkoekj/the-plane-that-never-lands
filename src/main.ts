@@ -365,6 +365,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     const treeFences = prefabs["tree fences"].instantiate(map, 100);
     const road = prefabs.road.instantiate(map, 100);
     const houses = prefabs.houses.instantiate(map, 100);
+    const cars = prefabs.cars.instantiate(map, 102);
     const cityClouds = prefabs.cityclouds.instantiate(map, 100);
 
     // Remove city street scene & start transition
@@ -376,6 +377,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     treeFences.destroyObject(200);
     road.destroyObject(200);
     houses.destroyObject(200);
+    cars.destroyObject(200);
     cityClouds.destroyObject(200);
 
     // Exit transition & load elevator scene
