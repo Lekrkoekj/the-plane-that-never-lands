@@ -38,10 +38,12 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         precision *= duration; // make the precision not per 1 beat, but scale over the entire length of the event
         const diff = to - from;
         
-        for (let t = 0; t <= duration; t += precision) {
-            const progress = t / duration;
-            const value = from + diff * progress;
-            material.set(map, { _Opacity: value }, beat + t);
+        if(duration > 0) {
+            for (let t = 0; t <= duration; t += precision) {
+                const progress = t / duration;
+                const value = from + diff * progress;
+                material.set(map, { _Opacity: value }, beat + t);
+            }
         }
         material.set(map, { _Opacity: to }, beat + duration);
     }
@@ -312,7 +314,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     }
 
     // Static Environment Prefabs/Materials
-    prefabs.skybox.instantiate(map, 0);
+    const skybox = prefabs.skybox.instantiate(map, 0);
     prefabs.transitionrunwayleft.instantiate(map, 0);
     prefabs.transitionrunwayright.instantiate(map, 0);
     prefabs.environmentfade.instantiate(map, 0);
@@ -342,19 +344,20 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     const airplaneCabin = prefabs["airplane cabin"].instantiate(map, 0);
     const airplaneRunway = prefabs["airplane runway"].instantiate(map, 0);
     const airplaneSeats = prefabs.seats.instantiate(map, 0);
-    const clouds = prefabs.clouds.instantiate(map, 0);
+    const planeClouds = prefabs.clouds.instantiate(map, 0);
+    const cloudParticles = prefabs.cloudparticles.instantiate(map, 0);
+    setMaterialOpacity(materials.cloudparticles, 0, 0, 0, 0, 1/16);
     setEnvironmentFade(2, 4, 1.5, 0, 1/64);
     
     // Remove airplane scene & start transition
-    const cloudParticles = prefabs.cloudparticles.instantiate(map, 88);
     setMaterialOpacity(materials.cloudparticles, 88, 1.5, 0, 1, 1/16);
     setEnvironmentFade(85.5, 4, 0, 1.5, 1/64);
     setMaterialOpacity(materials.transitionrunwaymaterial, 88.5, 1.5, 0, 1, 1/16);
     airplaneCabin.destroyObject(90);
     airplaneRunway.destroyObject(90);
     airplaneSeats.destroyObject(90);
+    planeClouds.destroyObject(90);
     
-
     // Exit transition & load city street scene
     setMaterialOpacity(materials.cloudparticles, 101, 2, 1, 0, 1/16);
     setMaterialOpacity(materials.transitionrunwaymaterial, 100, 2, 1, 0, 1/16);
@@ -384,6 +387,282 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     setMaterialOpacity(materials.cloudparticles, 213, 2, 1, 0, 1/16);
     setMaterialOpacity(materials.transitionrunwaymaterial, 212, 2, 1, 0, 1/16);
     setEnvironmentFade(213, 2, 1.5, 0.7, 1/64);
+    const elevator = prefabs.elevator.instantiate(map, 214)
+    const elevatorVignette = prefabs.elevatorvignette.instantiate(map, 214)
+    const elevatorDisplay = prefabs.animatedelevatordisplay.instantiate(map, 214)
+    const elevatorShafts = prefabs.elevatorshafts.instantiate(map, 214);
+    /// Elevator Ceiling Lights
+    rm.geometry(map, {
+        type: "Cube",
+        track: "elevatorCeiling1",
+        position: [0, -10000, 0],
+        scale: [0.8612955, 0.05070519, 1.508838],
+        material: {
+            shader: "OpaqueLight"
+        },
+        components: {
+            ILightWithId: {
+                type: 4,
+                lightID: 2
+            }
+        },
+    })
+    rm.animateTrack(map, {
+        track: "elevatorCeiling1",
+        beat: 214,
+        duration: 67,
+        animation: {
+            position: [
+                [-0.8773, 2.8794, 4.0288, 0],
+                [-0.8773, 2.8794, 4.0288, 1],
+                [0, -10000, 0, 1]
+            ]
+        }
+    })
+    rm.geometry(map, {
+        type: "Cube",
+        track: "elevatorCeiling2",
+        position: [0, -10000, 0],
+        scale: [0.8612955, 0.05070519, 1.508838],
+        material: {
+            shader: "OpaqueLight"
+        },
+        components: {
+            ILightWithId: {
+                type: 4,
+                lightID: 3
+            }
+        },
+    })
+    rm.animateTrack(map, {
+        track: "elevatorCeiling2",
+        beat: 214,
+        duration: 67,
+        animation: {
+            position: [
+                [0, 2.8794, 4.0288, 0],
+                [0, 2.8794, 4.0288, 1],
+                [0, -10000, 0, 1]
+            ]
+        }
+    })
+    rm.geometry(map, {
+        type: "Cube",
+        track: "elevatorCeiling3",
+        position: [0, -10000, 0],
+        scale: [0.8612955, 0.05070519, 1.508838],
+        material: {
+            shader: "OpaqueLight"
+        },
+        components: {
+            ILightWithId: {
+                type: 4,
+                lightID: 4
+            }
+        },
+    })
+    rm.animateTrack(map, {
+        track: "elevatorCeiling3",
+        beat: 214,
+        duration: 67,
+        animation: {
+            position: [
+                [0.8773, 2.8794, 4.0288, 0],
+                [0.8773, 2.8794, 4.0288, 1],
+                [0, -10000, 0, 1]
+            ]
+        }
+    })
+    rm.geometry(map, {
+        type: "Cube",
+        track: "elevatorCeiling4",
+        position: [0, -10000, 0],
+        scale: [0.8612955, 0.05070519, 1.508838],
+        material: {
+            shader: "OpaqueLight"
+        },
+        components: {
+            ILightWithId: {
+                type: 4,
+                lightID: 5
+            }
+        },
+    })
+    rm.animateTrack(map, {
+        track: "elevatorCeiling4",
+        beat: 214,
+        duration: 67,
+        animation: {
+            position: [
+                [-0.8773, 2.8794, 2.489, 0],
+                [-0.8773, 2.8794, 2.489, 1],
+                [0, -10000, 0, 1]
+            ]
+        }
+    })
+    rm.geometry(map, {
+        type: "Cube",
+        track: "elevatorCeiling5",
+        position: [0, -10000, 0],
+        scale: [0.8612955, 0.05070519, 1.508838],
+        material: {
+            shader: "OpaqueLight"
+        },
+        components: {
+            ILightWithId: {
+                type: 4,
+                lightID: 6
+            }
+        },
+    })
+    rm.animateTrack(map, {
+        track: "elevatorCeiling5",
+        beat: 214,
+        duration: 67,
+        animation: {
+            position: [
+                [0, 2.8794, 2.489, 0],
+                [0, 2.8794, 2.489, 1],
+                [0, -10000, 0, 1]
+            ]
+        }
+    })
+    rm.geometry(map, {
+        type: "Cube",
+        track: "elevatorCeiling6",
+        position: [0, -10000, 0],
+        scale: [0.8612955, 0.05070519, 1.508838],
+        material: {
+            shader: "OpaqueLight"
+        },
+        components: {
+            ILightWithId: {
+                type: 4,
+                lightID: 7
+            }
+        },
+    })
+    rm.animateTrack(map, {
+        track: "elevatorCeiling6",
+        beat: 214,
+        duration: 67,
+        animation: {
+            position: [
+                [0.8773, 2.8794, 2.489, 0],
+                [0.8773, 2.8794, 2.489, 1],
+                [0, -10000, 0, 1]
+            ]
+        }
+    })
+    rm.geometry(map, {
+        type: "Cube",
+        track: "elevatorCeiling7",
+        position: [0, -10000, 0],
+        scale: [0.8612955, 0.05070519, 1.508838],
+        material: {
+            shader: "OpaqueLight"
+        },
+        components: {
+            ILightWithId: {
+                type: 4,
+                lightID: 8
+            }
+        },
+    })
+    rm.animateTrack(map, {
+        track: "elevatorCeiling7",
+        beat: 214,
+        duration: 67,
+        animation: {
+            position: [
+                [-0.8773, 2.8794, 0.943, 0],
+                [-0.8773, 2.8794, 0.943, 1],
+                [0, -10000, 0, 1]
+            ]
+        }
+    })
+    rm.geometry(map, {
+        type: "Cube",
+        track: "elevatorCeiling8",
+        position: [0, -10000, 0],
+        scale: [0.8612955, 0.05070519, 1.508838],
+        material: {
+            shader: "OpaqueLight"
+        },
+        components: {
+            ILightWithId: {
+                type: 4,
+                lightID: 9
+            }
+        },
+    })
+    rm.animateTrack(map, {
+        track: "elevatorCeiling8",
+        beat: 214,
+        duration: 67,
+        animation: {
+            position: [
+                [0, 2.8794, 0.943, 0],
+                [0, 2.8794, 0.943, 1],
+                [0, -10000, 0, 1]
+            ]
+        }
+    })
+    rm.geometry(map, {
+        type: "Cube",
+        track: "elevatorCeiling9",
+        position: [0, -10000, 0],
+        scale: [0.8612955, 0.05070519, 1.508838],
+        material: {
+            shader: "OpaqueLight"
+        },
+        components: {
+            ILightWithId: {
+                type: 4,
+                lightID: 10
+            }
+        },
+    })
+    rm.animateTrack(map, {
+        track: "elevatorCeiling9",
+        beat: 214,
+        duration: 67,
+        animation: {
+            position: [
+                [0.8773, 2.8794, 0.943, 0],
+                [0.8773, 2.8794, 0.943, 1],
+                [0, -10000, 0, 1]
+            ]
+        }
+    })
+
+    // Fade house to black
+    setEnvironmentFade(385, 9, 0, 1.5, 1/64);
+
+    // Remove house & fade out to sky
+    elevator.destroyObject(410)
+    elevatorDisplay.destroyObject(410);
+    elevatorVignette.destroyObject(410);
+    elevatorShafts.destroyObject(410);
+    setEnvironmentFade(411, 2, 1.5, 0, 1/16);
+    const clouds = prefabs.clouds.instantiate(map, 410);
+    
+
+    rm.
+
+    
+
+    
+    // map.allNotes.forEach(note => { // Notes coming from above during elevator scene
+    //     if(note.beat > 215 && note.beat < 281) {
+    //         note.animation = {
+    //             offsetPosition: [
+    //                 [0, 1, 0, 0],
+    //                 [0, 0, 0, 0.3, "easeOutQuad"]
+    //             ]
+    //         }
+    //     }
+    // });
 }
 
 await Promise.all([

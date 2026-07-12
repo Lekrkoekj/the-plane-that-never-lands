@@ -107,7 +107,7 @@ SubShader {
 	Lighting Off
 	Fog { Mode Off }
 	ZTest [unity_GUIZTestMode]
-	Blend One OneMinusSrcAlpha
+	Blend One Zero
 	ColorMask [_ColorMask]
 
 	Pass {
@@ -305,7 +305,18 @@ SubShader {
 			clip(faceColor.a - 0.001);
 		#endif
 
-  		return faceColor * input.color.a;
+  		fixed4 col = faceColor;
+
+		// Preserve TMP transparency via discard instead of alpha blending
+		clip(col.a - 0.001);
+
+		// Remove alpha influence on brightness
+		col.rgb *= input.color.rgb;
+
+		// Force bloom value instead of using alpha
+		col.a = 0;
+
+		return col;
 		}
 
 		ENDCG
