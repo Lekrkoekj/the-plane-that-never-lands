@@ -98,12 +98,16 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
                         rotation: [
                             [0, -60.5, 15, 0],             // Airplane Cabin
                             [0, -60.5, 15, 90/d],          // ^
-                            [60, -100, -90, 91/d],
+                            [60, -100, -90, 91/d],         // City Street
+                            [60, -100, -90, 285/d],        // ^
+                            [60, -100, -90, 286/d]         // House
                         ],
                         position: [
                             [-3, 3.75 + airplaneHeightOffset * (i + 1), 50, 0],          // Airplane Cabin
                             [-3, 3.75 + airplaneHeightOffset * (i + 1), 50, 90/d],       // ^
-                            [-3.6, -2.1, cityDepthOffset * (i + 1), 91/d],
+                            [-3.6, -2.1, cityDepthOffset * (i + 1), 91/d],               // City Street
+                            [-3.6, -2.1, cityDepthOffset * (i + 1), 285/d],              // ^
+                            [-20 + 1.76 * (i + 1), -2.1, 10 + 2 * (i + 1), 286/d],          // House
                         ]
                     }
                 });
@@ -124,17 +128,73 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
                         rotation: [
                             [0, 60.5, -15, 0],         // Airplane Cabin
                             [0, 60.5, -15, 90/d],      // ^
-                            [60, 100, 90, 91/d],
+                            [60, 100, 90, 91/d],       // City Street
+                            [60, 100, 90, 285/d],       // ^
+                            [60, 100, 90, 285/d],       // House
                         ],
                         position: [
                             [3, 3.75 + airplaneHeightOffset * (i + 1), 50, 0],          // Airplane Cabin
                             [3, 3.75 + airplaneHeightOffset * (i + 1), 50, 90/d],       // ^
-                            [3.6, -2.1, cityDepthOffset * (i + 1), 91/d],
+                            [3.6, -2.1, cityDepthOffset * (i + 1), 91/d],               // City Street
+                            [-3.6, -2.1, cityDepthOffset * (i + 1), 285/d],             // ^
+                            [20 - 1.76 * (i + 1), -2.1, 10 + 2 * (i + 1), 286/d],          // House
                         ]
                     }
                 });
             }
         }
+    }
+
+    const lightingMaterialsList = [
+        materials.grassplanematerial,
+        materials.grassmaterial3,
+        materials.treematerial1,
+        materials.treematerial2,
+        materials.treematerial3,
+        materials.rockmaterial1,
+        materials.rockmaterial2,
+        materials.rockmaterial3,
+        materials.rockmaterial4,
+        materials.treetrunkmaterial,
+        materials.bushbigmaterial,
+        materials.bushflowermaterial,
+        materials.bushmed2material,
+        materials.bushmedmaterial,
+        materials.runwaymaterialhouse,
+        materials["housematerial awning"],
+        materials["housematerial floor"],
+        materials["housematerial main"],
+        materials["housematerial roofline"],
+        materials["housematerial windows"]
+    ]
+    /**
+     * Linearly changes the day/night cycle of the environment.
+     * @param beat The beat on which this event should start.
+     * @param duration How many beats this event should take.
+     * @param from The value of the day/night cycle at the beginning of the event.
+     * @param to The value of the day/night cycle at the end of the event.
+     * @param precision How smooth the event should look / how many custom events this should take.
+     */
+    function setDayNightCycle(beat: number, duration: number, from: number, to: number, precision: number) {
+        precision *= duration; // make the precision not per 1 beat, but scale over the entire length of the event
+        const diff = to - from;
+        
+        const cycleObj = { _DayNightCycle: 0}
+        if(duration != 0) {
+            for (let t = 0; t <= duration; t += precision) {
+                const progress = t / duration;
+                const value = from + diff * progress;
+
+                cycleObj._DayNightCycle = value;
+            
+                lightingMaterialsList.forEach(material => {
+                    material.set(map, cycleObj, beat + t);
+                })
+            }
+        }
+        lightingMaterialsList.forEach(material => {
+            material.set(map, { _DayNightCycle: to }, beat + duration);
+        });
     }
 
     /// ---- { ENVIRONMENT } -----
@@ -338,6 +398,8 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         "Mountains"
     ], "Contains")
 
+
+
     /// ---- { EVENTS } -----
 
     // Load airplane environment
@@ -410,7 +472,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     rm.animateTrack(map, {
         track: "elevatorCeiling1",
         beat: 214,
-        duration: 67,
+        duration: 68,
         animation: {
             position: [
                 [-0.8773, 2.8794, 4.0288, 0],
@@ -437,7 +499,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     rm.animateTrack(map, {
         track: "elevatorCeiling2",
         beat: 214,
-        duration: 67,
+        duration: 68,
         animation: {
             position: [
                 [0, 2.8794, 4.0288, 0],
@@ -464,7 +526,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     rm.animateTrack(map, {
         track: "elevatorCeiling3",
         beat: 214,
-        duration: 67,
+        duration: 68,
         animation: {
             position: [
                 [0.8773, 2.8794, 4.0288, 0],
@@ -491,7 +553,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     rm.animateTrack(map, {
         track: "elevatorCeiling4",
         beat: 214,
-        duration: 67,
+        duration: 68,
         animation: {
             position: [
                 [-0.8773, 2.8794, 2.489, 0],
@@ -518,7 +580,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     rm.animateTrack(map, {
         track: "elevatorCeiling5",
         beat: 214,
-        duration: 67,
+        duration: 68,
         animation: {
             position: [
                 [0, 2.8794, 2.489, 0],
@@ -545,7 +607,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     rm.animateTrack(map, {
         track: "elevatorCeiling6",
         beat: 214,
-        duration: 67,
+        duration: 68,
         animation: {
             position: [
                 [0.8773, 2.8794, 2.489, 0],
@@ -572,7 +634,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     rm.animateTrack(map, {
         track: "elevatorCeiling7",
         beat: 214,
-        duration: 67,
+        duration: 68,
         animation: {
             position: [
                 [-0.8773, 2.8794, 0.943, 0],
@@ -599,7 +661,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     rm.animateTrack(map, {
         track: "elevatorCeiling8",
         beat: 214,
-        duration: 67,
+        duration: 68,
         animation: {
             position: [
                 [0, 2.8794, 0.943, 0],
@@ -626,7 +688,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     rm.animateTrack(map, {
         track: "elevatorCeiling9",
         beat: 214,
-        duration: 67,
+        duration: 68,
         animation: {
             position: [
                 [0.8773, 2.8794, 0.943, 0],
@@ -636,33 +698,217 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         }
     })
 
+    // Remove elevator and fade to black
+    elevator.destroyObject(288)
+    elevatorDisplay.destroyObject(288);
+    elevatorVignette.destroyObject(288);
+    elevatorShafts.destroyObject(288);
+    setEnvironmentFade(280, 4, 0, 1.5, 1/64);
+    setMaterialOpacity(materials.cloudparticles, 283, 4, 0, 1, 1/16);
+    setMaterialOpacity(materials.transitionrunwaymaterial, 283, 4, 0, 1, 1/16);
+
+    /// House environment
+    setMaterialOpacity(materials.cloudparticles, 294, 4, 1, 0, 1/16);
+    setEnvironmentFade(294, 4, 1.5, 0, 1/64);
+    setMaterialOpacity(materials.transitionrunwaymaterial, 294, 4, 1, 0, 1/16);
+    const house = prefabs.house.instantiate(map, 291);
+    const bushes = prefabs.bushes.instantiate(map, 291);
+    const trees = prefabs.trees.instantiate(map, 291);
+    const rocks = prefabs.rocks.instantiate(map, 291);
+    const grass = prefabs.grass.instantiate(map, 291);
+    const grassPlane = prefabs.grassplane.instantiate(map, 291);
+    const runway = prefabs.runway.instantiate(map, 291);
+    const lamps = prefabs.lamps.instantiate(map, 291);
+    const sleepingParticles = prefabs.sleepingparticles.instantiate(map, 291);
+
+    // Bottom window light
+    if(!chromaOnly) rm.geometry(map, {
+        type: "Cube",
+        track: "bottomWindowLight",
+        material: {
+            shader: "OpaqueLight"
+        },
+        components: {
+            ILightWithId: {
+                type: 0,
+            }
+        },
+        position: [0, -10000, 0],
+        rotation: [-90, 0, -147.951],
+        scale: [0.1629212, 1.64822, 1.486101]
+    })
+    rm.animateTrack(map, {
+        track: "bottomWindowLight",
+        beat: 291,
+        duration: 115,
+        animation: {
+            position: [
+                [-8.465, 2, 12.92, 0],
+                [-8.465, 2, 12.92, 1],
+                [0, -10000, 0, 1]
+            ]
+        }
+    })
+
+    // Door light
+    if(!chromaOnly) rm.geometry(map, {
+        type: "Cube",
+        track: "doorLight",
+        material: {
+            shader: "OpaqueLight"
+        },
+        components: {
+            ILightWithId: {
+                type: 0,
+            }
+        },
+        position: [0, -10000, 0],
+        rotation: [-90, 0, -147.951],
+        scale: [0.1629212, 1.64822, 1.486101]
+    })
+    rm.animateTrack(map, {
+        track: "doorLight",
+        beat: 291,
+        duration: 115,
+        animation: {
+            position: [
+                [-7.1572, 2.0895, 15.1953, 0],
+                [-7.1572, 2.0895, 15.1953, 1],
+                [0, -10000, 0, 1]
+            ]
+        }
+    })
+
+    // Left lantern light 1
+    if(!chromaOnly) rm.geometry(map, {
+        type: "Cylinder",
+        material: {
+            shader: "TransparentLight"
+        },
+        components: {
+            ILightWithId: {
+                type: 1,
+                lightID: 5
+            }
+        },
+        localPosition: [-3.810996, 4.032, 6.5],
+        rotation: [0, 0, 0],
+        scale: [0.3797671, 0.2093542, 0.3797671]
+    })
+
+    // Left lantern light 2
+    if(!chromaOnly) rm.geometry(map, {
+        type: "Cylinder",
+        material: {
+            shader: "TransparentLight"
+        },
+        components: {
+            ILightWithId: {
+                type: 6,
+                lightID: 5
+            }
+        },
+        localPosition: [-3.810996, 4.032, 13.25],
+        rotation: [0, 0, 0],
+        scale: [0.3797671, 0.2093542, 0.3797671]
+    })
+
+    // Left lantern light 3
+    if(!chromaOnly)  rm.geometry(map, {
+        type: "Cylinder",
+        material: {
+            shader: "TransparentLight"
+        },
+        components: {
+            ILightWithId: {
+                type: 7,
+                lightID: 5
+            }
+        },
+        localPosition: [-3.810996, 4.032, 20],
+        rotation: [0, 0, 0],
+        scale: [0.3797671, 0.2093542, 0.3797671]
+    })
+
+    // Right lantern light 1
+    if(!chromaOnly) rm.geometry(map, {
+        type: "Cylinder",
+        material: {
+            shader: "TransparentLight"
+        },
+        components: {
+            ILightWithId: {
+                type: 1,
+                lightID: 6
+            }
+        },
+        localPosition: [3.810996, 4.032, 6.5],
+        rotation: [0, 0, 0],
+        scale: [0.3797671, 0.2093542, 0.3797671]
+    })
+
+    // Right lantern light 2
+    if(!chromaOnly) rm.geometry(map, {
+        type: "Cylinder",
+        material: {
+            shader: "TransparentLight"
+        },
+        components: {
+            ILightWithId: {
+                type: 6,
+                lightID: 6
+            }
+        },
+        localPosition: [3.810996, 4.032, 13.25],
+        rotation: [0, 0, 0],
+        scale: [0.3797671, 0.2093542, 0.3797671]
+    })
+
+    // Right lantern light 3
+    if(!chromaOnly)  rm.geometry(map, {
+        type: "Cylinder",
+        material: {
+            shader: "TransparentLight"
+        },
+        components: {
+            ILightWithId: {
+                type: 7,
+                lightID: 6
+            }
+        },
+        localPosition: [3.810996, 4.032, 20],
+        rotation: [0, 0, 0],
+        scale: [0.3797671, 0.2093542, 0.3797671]
+    })
+
+    setDayNightCycle(291, 0.5, 0.5, 0.5, 1/4);
+    materials.skyboxmaterial.set(map, {
+        _DayNightCycle: 0,
+    }, 291);
+
+    setDayNightCycle(385, 4, 0.5, 0, 1/16);
+
     // Fade house to black
     setEnvironmentFade(385, 9, 0, 1.5, 1/64);
 
     // Remove house & fade out to sky
-    elevator.destroyObject(410)
-    elevatorDisplay.destroyObject(410);
-    elevatorVignette.destroyObject(410);
-    elevatorShafts.destroyObject(410);
-    setEnvironmentFade(411, 2, 1.5, 0, 1/16);
+    house.destroyObject(402);
+    bushes.destroyObject(402);
+    trees.destroyObject(402);
+    rocks.destroyObject(402);
+    grass.destroyObject(402);
+    grassPlane.destroyObject(402);
+    runway.destroyObject(402);
+    lamps.destroyObject(402);
+    materials.skyboxmaterial.set(map, {
+        _DayNightCycle: 1,
+    }, 402);
+
+    setEnvironmentFade(411, 2, 1.5, 0, 1/64);
     const clouds = prefabs.clouds.instantiate(map, 410);
-    
 
-    rm.
+    // Cameras
 
-    
-
-    
-    // map.allNotes.forEach(note => { // Notes coming from above during elevator scene
-    //     if(note.beat > 215 && note.beat < 281) {
-    //         note.animation = {
-    //             offsetPosition: [
-    //                 [0, 1, 0, 0],
-    //                 [0, 0, 0, 0.3, "easeOutQuad"]
-    //             ]
-    //         }
-    //     }
-    // });
 }
 
 await Promise.all([
