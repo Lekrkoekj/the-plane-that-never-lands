@@ -17,6 +17,8 @@ Shader "Lekrkoekj/TransparentParticleShader"
         ZWrite Off
         ZTest Always
 
+        Cull Off
+
         Pass
         {
             CGPROGRAM

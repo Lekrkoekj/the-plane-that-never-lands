@@ -432,6 +432,8 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     const houses = prefabs.houses.instantiate(map, 100);
     const cars = prefabs.cars.instantiate(map, 102);
     const cityClouds = prefabs.cityclouds.instantiate(map, 100);
+    const leafParticles = prefabs.leafparticles.instantiate(map, 168);
+    const leafPiles = prefabs.leafpiles.instantiate(map, 100);
 
     // Remove city street scene & start transition
     setMaterialOpacity(materials.cloudparticles, 200, 1.5, 0, 1, 1/16);
@@ -444,6 +446,8 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     houses.destroyObject(200);
     cars.destroyObject(200);
     cityClouds.destroyObject(200);
+    leafParticles.destroyObject(200);
+    leafPiles.destroyObject(200);
 
     // Exit transition & load elevator scene
     setMaterialOpacity(materials.cloudparticles, 213, 2, 1, 0, 1/16);
@@ -708,9 +712,9 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     setMaterialOpacity(materials.transitionrunwaymaterial, 283, 4, 0, 1, 1/16);
 
     /// House environment
-    setMaterialOpacity(materials.cloudparticles, 294, 4, 1, 0, 1/16);
+    setMaterialOpacity(materials.cloudparticles, 294, 3, 1, 0, 1/16);
     setEnvironmentFade(294, 4, 1.5, 0, 1/64);
-    setMaterialOpacity(materials.transitionrunwaymaterial, 294, 4, 1, 0, 1/16);
+    setMaterialOpacity(materials.transitionrunwaymaterial, 293, 4, 1, 0, 1/16);
     const house = prefabs.house.instantiate(map, 291);
     const bushes = prefabs.bushes.instantiate(map, 291);
     const trees = prefabs.trees.instantiate(map, 291);
@@ -886,6 +890,15 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         _DayNightCycle: 0,
     }, 291);
 
+    // Cameras
+    const screenshotters = prefabs.screenshotters.instantiate(map, 0);
+    screenshotters.destroyObject(396);
+    
+    const flashbackAirplaneCabin = prefabs.flashbackairplanecabin.instantiate(map, 330.5);
+    const flashbackStreet = prefabs.flashbackstreet.instantiate(map, 338.5)
+    const flashbackElevator = prefabs.flashbackelevator.instantiate(map, 347);
+    const extraSleepingParticles = prefabs.sleepingparticlesextra.instantiate(map, 354.5);
+
     setDayNightCycle(385, 4, 0.5, 0, 1/16);
 
     // Fade house to black
@@ -898,6 +911,11 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     rocks.destroyObject(402);
     grass.destroyObject(402);
     grassPlane.destroyObject(402);
+    sleepingParticles.destroyObject(394);
+    flashbackAirplaneCabin.destroyObject(402);
+    flashbackStreet.destroyObject(402);
+    flashbackElevator.destroyObject(402);
+    extraSleepingParticles.destroyObject(394);
     runway.destroyObject(402);
     lamps.destroyObject(402);
     materials.skyboxmaterial.set(map, {
@@ -906,9 +924,6 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
 
     setEnvironmentFade(411, 2, 1.5, 0, 1/64);
     const clouds = prefabs.clouds.instantiate(map, 410);
-
-    // Cameras
-
 }
 
 await Promise.all([
