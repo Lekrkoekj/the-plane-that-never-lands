@@ -163,14 +163,14 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
             track: "uiPanelLeft",
             beat: beat,
             animation: {
-                localPosition: value == "on" ? [-2.75, 1, 5] : [0,-1000, 0]
+                localPosition: value == "on" ? [-2.75, 1, 7.5] : [0,-1000, 0]
             }
         })
         rm.animateTrack(map,{
             track: "uiPanelRight",
             beat: beat,
             animation: {
-                localPosition: value == "on" ? [2.75, 0.5, 5] : [0,-1000, 0]
+                localPosition: value == "on" ? [2.75, 0.5, 7.5] : [0,-1000, 0]
             }
         })
     }
@@ -250,7 +250,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     if(!chromaOnly) rm.environment(map, {
         id: "LeftPanel",
         lookupMethod: "EndsWith",
-        localPosition: [-2.75, 1, 5],
+        localPosition: [-2.75, 1, 7.5],
         rotation: [0, -20, 0],
         track: "uiPanelLeft"
     })
@@ -259,7 +259,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     if(!chromaOnly) rm.environment(map, {
         id: "RightPanel",
         lookupMethod: "EndsWith",
-        localPosition: [2.75, 0.5, 5],
+        localPosition: [2.75, 0.5, 5.5],
         rotation: [0, 20, 0],
         track: "uiPanelRight"
     })
@@ -454,7 +454,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     prefabs.transitionrunwayright.instantiate(map, 0);
     prefabs.environmentfade.instantiate(map, 0);
     materials.environmentfadematerial.set(map, {_Fill: 1.5});
-    prefabs.testcube.instantiate(map, 0);
+    // prefabs.testcube.instantiate(map, 0); this random cube stayed in the map without me noticing for over 7 months lmao
 
     // Environment Removals
     if(!chromaOnly) rm.environmentRemoval(map, [
@@ -477,6 +477,9 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
 
     /// ---- { EVENTS } -----
 
+    prefabs.animatedlyrics.instantiate(map, 0);
+    prefabs.houselyrics.instantiate(map, 0);
+
     // Load airplane environment
     toggleUiPanels(0, "off");
     const airplaneCabin = prefabs["airplane cabin"].instantiate(map, 0);
@@ -488,7 +491,6 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     setEnvironmentFade(2, 4, 1.5, 0, 1/64);
     
     // Remove airplane scene & start transition
-    toggleUiPanels(88.5, "on");
     setMaterialOpacity(materials.cloudparticles, 88, 1.5, 0, 1, 1/16);
     setEnvironmentFade(85.5, 4, 0, 1.5, 1/64);
     setMaterialOpacity(materials.transitionrunwaymaterial, 88.5, 1.5, 0, 1, 1/16);
@@ -516,7 +518,6 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     setMaterialOpacity(materials.cloudparticles, 200, 1.5, 0, 1, 1/16);
     setEnvironmentFade(197.5, 4, 0, 1.5, 1/64);
     setMaterialOpacity(materials.transitionrunwaymaterial, 200.5, 1.5, 0, 1, 1/16);
-    toggleUiPanels(200, "off");
     sidewalks.destroyObject(202);
     cityBuildings.destroyObject(202);
     treeFences.destroyObject(202);
@@ -793,8 +794,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     /// House environment
     setMaterialOpacity(materials.cloudparticles, 294, 3, 1, 0, 1/16);
     setEnvironmentFade(294, 4, 1.5, 0, 1/64);
-    setMaterialOpacity(materials.transitionrunwaymaterial, 293, 4, 1, 0, 1/16);
-    toggleUiPanels(295, "on");
+    setMaterialOpacity(materials.transitionrunwaymaterial, 293, 3, 1, 0, 1/16);
     const house = prefabs.house.instantiate(map, 291);
     const bushes = prefabs.bushes.instantiate(map, 291);
     const trees = prefabs.trees.instantiate(map, 291);
@@ -985,7 +985,6 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
 
     // Fade house to black
     setEnvironmentFade(385, 9, 0, 1.5, 1/64);
-    toggleUiPanels(391, "off");
 
     // Remove house & fade out to sky
     house.destroyObject(402);
@@ -1004,9 +1003,8 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     materials.skyboxmaterial.set(map, {
         _DayNightCycle: 1,
     }, 402);
-
-    toggleUiPanels(411.5, "on");
     setEnvironmentFade(411, 2, 1.5, 0, 1/64);
+    toggleUiPanels(411.5, "on");
     prefabs.cloudssky.instantiate(map, 410);
     prefabs.airplane.instantiate(map, 410);
     skybox.destroyObject(410);
