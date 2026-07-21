@@ -103,10 +103,10 @@ SubShader {
 	}
 
 	Cull [_CullMode]
-	ZWrite Off
-	Lighting Off
-	Fog { Mode Off }
-	ZTest [unity_GUIZTestMode]
+    ZWrite On
+    ZTest LEqual
+    Lighting Off
+    Fog { Mode Off }
 	Blend One Zero
 	ColorMask [_ColorMask]
 

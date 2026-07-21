@@ -100,14 +100,18 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
                             [0, -60.5, 15, 90/d],          // ^
                             [60, -100, -90, 91/d],         // City Street
                             [60, -100, -90, 285/d],        // ^
-                            [60, -100, -90, 286/d]         // House
+                            [60, -100, -90, 286/d],        // House
+                            [60, -100, -90, 409/d],        // ^
+                            [120, -100, -90, 410/d],       // Sky
                         ],
                         position: [
                             [-3, 3.75 + airplaneHeightOffset * (i + 1), 50, 0],          // Airplane Cabin
                             [-3, 3.75 + airplaneHeightOffset * (i + 1), 50, 90/d],       // ^
                             [-3.6, -2.1, cityDepthOffset * (i + 1), 91/d],               // City Street
                             [-3.6, -2.1, cityDepthOffset * (i + 1), 285/d],              // ^
-                            [-20 + 1.76 * (i + 1), -2.1, 10 + 2 * (i + 1), 286/d],          // House
+                            [-20 + 1.76 * (i + 1), -2.1, 10 + 2 * (i + 1), 286/d],       // House
+                            [-20 + 1.76 * (i + 1), -2.1, 10 + 2 * (i + 1), 409/d],       // House
+                            [-3, -4, cityDepthOffset * (i + 1), 410/d]                 // Sky
                         ]
                     }
                 });
@@ -129,20 +133,46 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
                             [0, 60.5, -15, 0],         // Airplane Cabin
                             [0, 60.5, -15, 90/d],      // ^
                             [60, 100, 90, 91/d],       // City Street
-                            [60, 100, 90, 285/d],       // ^
-                            [60, 100, 90, 285/d],       // House
+                            [60, 100, 90, 285/d],      // ^
+                            [60, 100, 90, 285/d],      // House
+                            [60, 100, 90, 409/d],      // ^
+                            [60, -100, -90, 410/d],    // Sky
                         ],
                         position: [
                             [3, 3.75 + airplaneHeightOffset * (i + 1), 50, 0],          // Airplane Cabin
                             [3, 3.75 + airplaneHeightOffset * (i + 1), 50, 90/d],       // ^
                             [3.6, -2.1, cityDepthOffset * (i + 1), 91/d],               // City Street
-                            [-3.6, -2.1, cityDepthOffset * (i + 1), 285/d],             // ^
-                            [20 - 1.76 * (i + 1), -2.1, 10 + 2 * (i + 1), 286/d],          // House
+                            [3.6, -2.1, cityDepthOffset * (i + 1), 285/d],              // ^
+                            [20 - 1.76 * (i + 1), -2.1, 10 + 2 * (i + 1), 286/d],       // House
+                            [20 - 1.76 * (i + 1), -2.1, 10 + 2 * (i + 1), 409/d],       // House
+                            [2.9, -4, cityDepthOffset * (i + 1), 410/d]                   // Sky
                         ]
                     }
                 });
             }
         }
+    }
+
+    /**
+     * Show/hide Beat Saber's UI panels of the score, combo, song timer, etc.
+     * @param beat When this event should start.
+     * @param value Whether they should be toggled on or off.
+     */
+    function toggleUiPanels(beat: number, value: "on" | "off") {
+        rm.animateTrack(map,{
+            track: "uiPanelLeft",
+            beat: beat,
+            animation: {
+                localPosition: value == "on" ? [-2.75, 1, 5] : [0,-1000, 0]
+            }
+        })
+        rm.animateTrack(map,{
+            track: "uiPanelRight",
+            beat: beat,
+            animation: {
+                localPosition: value == "on" ? [2.75, 0.5, 5] : [0,-1000, 0]
+            }
+        })
     }
 
     const lightingMaterialsList = [
@@ -165,7 +195,8 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         materials["housematerial floor"],
         materials["housematerial main"],
         materials["housematerial roofline"],
-        materials["housematerial windows"]
+        materials["housematerial windows"],
+        materials.skyboxendmaterial
     ]
     /**
      * Linearly changes the day/night cycle of the environment.
@@ -175,7 +206,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
      * @param to The value of the day/night cycle at the end of the event.
      * @param precision How smooth the event should look / how many custom events this should take.
      */
-    function setDayNightCycle(beat: number, duration: number, from: number, to: number, precision: number) {
+    function setDayNightCycle(beat: number, duration: number, from: number, to: number, precision: number, mat?: rm.Material) {
         precision *= duration; // make the precision not per 1 beat, but scale over the entire length of the event
         const diff = to - from;
         
@@ -186,15 +217,25 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
                 const value = from + diff * progress;
 
                 cycleObj._DayNightCycle = value;
-            
-                lightingMaterialsList.forEach(material => {
-                    material.set(map, cycleObj, beat + t);
-                })
+                
+                if(mat == null) {
+                    lightingMaterialsList.forEach(material => {
+                        material.set(map, cycleObj, beat + t);
+                    })
+                }
+                else {
+                    mat.set(map, cycleObj, beat + t);
+                }
             }
         }
-        lightingMaterialsList.forEach(material => {
-            material.set(map, { _DayNightCycle: to }, beat + duration);
-        });
+        if(mat == null) {
+            lightingMaterialsList.forEach(material => {
+                material.set(map, { _DayNightCycle: to }, beat + duration);
+            });
+        }
+        else {
+            mat.set(map, { _DayNightCycle: to }, beat + duration);
+        }
     }
 
     /// ---- { ENVIRONMENT } -----
@@ -204,6 +245,40 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     setLaserTracks("right");
     setLaserPositions("left");
     setLaserPositions("right");
+
+    // Left UI Panel
+    if(!chromaOnly) rm.environment(map, {
+        id: "LeftPanel",
+        lookupMethod: "EndsWith",
+        localPosition: [-2.75, 1, 5],
+        rotation: [0, -20, 0],
+        track: "uiPanelLeft"
+    })
+
+    // Right UI Panel
+    if(!chromaOnly) rm.environment(map, {
+        id: "RightPanel",
+        lookupMethod: "EndsWith",
+        localPosition: [2.75, 0.5, 5],
+        rotation: [0, 20, 0],
+        track: "uiPanelRight"
+    })
+
+    // Moon
+    rm.environment(map, {
+        id: `Moon`,
+        lookupMethod: "EndsWith",
+        "localPosition": [
+            0,
+            22,
+            150
+        ],
+        "scale": [
+            10,
+            10,
+            10
+        ]
+    });
 
     // Assign all notes to a track
     if(!chromaOnly) map.allNotes.forEach(note => {
@@ -403,6 +478,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     /// ---- { EVENTS } -----
 
     // Load airplane environment
+    toggleUiPanels(0, "off");
     const airplaneCabin = prefabs["airplane cabin"].instantiate(map, 0);
     const airplaneRunway = prefabs["airplane runway"].instantiate(map, 0);
     const airplaneSeats = prefabs.seats.instantiate(map, 0);
@@ -412,6 +488,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     setEnvironmentFade(2, 4, 1.5, 0, 1/64);
     
     // Remove airplane scene & start transition
+    toggleUiPanels(88.5, "on");
     setMaterialOpacity(materials.cloudparticles, 88, 1.5, 0, 1, 1/16);
     setEnvironmentFade(85.5, 4, 0, 1.5, 1/64);
     setMaterialOpacity(materials.transitionrunwaymaterial, 88.5, 1.5, 0, 1, 1/16);
@@ -439,24 +516,26 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     setMaterialOpacity(materials.cloudparticles, 200, 1.5, 0, 1, 1/16);
     setEnvironmentFade(197.5, 4, 0, 1.5, 1/64);
     setMaterialOpacity(materials.transitionrunwaymaterial, 200.5, 1.5, 0, 1, 1/16);
-    sidewalks.destroyObject(200);
-    cityBuildings.destroyObject(200);
-    treeFences.destroyObject(200);
-    road.destroyObject(200);
-    houses.destroyObject(200);
-    cars.destroyObject(200);
-    cityClouds.destroyObject(200);
-    leafParticles.destroyObject(200);
-    leafPiles.destroyObject(200);
+    toggleUiPanels(200, "off");
+    sidewalks.destroyObject(202);
+    cityBuildings.destroyObject(202);
+    treeFences.destroyObject(202);
+    road.destroyObject(202);
+    houses.destroyObject(202);
+    cars.destroyObject(202);
+    cityClouds.destroyObject(202);
+    leafParticles.destroyObject(202);
+    leafPiles.destroyObject(202);
 
     // Exit transition & load elevator scene
     setMaterialOpacity(materials.cloudparticles, 213, 2, 1, 0, 1/16);
     setMaterialOpacity(materials.transitionrunwaymaterial, 212, 2, 1, 0, 1/16);
     setEnvironmentFade(213, 2, 1.5, 0.7, 1/64);
-    const elevator = prefabs.elevator.instantiate(map, 214)
-    const elevatorVignette = prefabs.elevatorvignette.instantiate(map, 214)
-    const elevatorDisplay = prefabs.animatedelevatordisplay.instantiate(map, 214)
-    const elevatorShafts = prefabs.elevatorshafts.instantiate(map, 214);
+    const elevator = prefabs.elevator.instantiate(map, 212)
+    const elevatorVignette = prefabs.elevatorvignette.instantiate(map, 212)
+    const elevatorDisplay = prefabs.animatedelevatordisplay.instantiate(map, 212)
+    const elevatorShafts = prefabs.elevatorshafts.instantiate(map, 212);
+    
     /// Elevator Ceiling Lights
     rm.geometry(map, {
         type: "Cube",
@@ -468,8 +547,8 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         },
         components: {
             ILightWithId: {
-                type: 4,
-                lightID: 2
+                type: 2,
+                lightID: 19
             }
         },
     })
@@ -495,8 +574,8 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         },
         components: {
             ILightWithId: {
-                type: 4,
-                lightID: 3
+                type: 2,
+                lightID: 20
             }
         },
     })
@@ -522,8 +601,8 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         },
         components: {
             ILightWithId: {
-                type: 4,
-                lightID: 4
+                type: 2,
+                lightID: 21
             }
         },
     })
@@ -549,8 +628,8 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         },
         components: {
             ILightWithId: {
-                type: 4,
-                lightID: 5
+                type: 2,
+                lightID: 22
             }
         },
     })
@@ -576,8 +655,8 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         },
         components: {
             ILightWithId: {
-                type: 4,
-                lightID: 6
+                type: 2,
+                lightID: 23
             }
         },
     })
@@ -603,8 +682,8 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         },
         components: {
             ILightWithId: {
-                type: 4,
-                lightID: 7
+                type: 2,
+                lightID: 24
             }
         },
     })
@@ -630,8 +709,8 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         },
         components: {
             ILightWithId: {
-                type: 4,
-                lightID: 8
+                type: 2,
+                lightID: 25
             }
         },
     })
@@ -657,8 +736,8 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         },
         components: {
             ILightWithId: {
-                type: 4,
-                lightID: 9
+                type: 2,
+                lightID: 26
             }
         },
     })
@@ -684,8 +763,8 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         },
         components: {
             ILightWithId: {
-                type: 4,
-                lightID: 10
+                type: 2,
+                lightID: 27
             }
         },
     })
@@ -715,6 +794,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     setMaterialOpacity(materials.cloudparticles, 294, 3, 1, 0, 1/16);
     setEnvironmentFade(294, 4, 1.5, 0, 1/64);
     setMaterialOpacity(materials.transitionrunwaymaterial, 293, 4, 1, 0, 1/16);
+    toggleUiPanels(295, "on");
     const house = prefabs.house.instantiate(map, 291);
     const bushes = prefabs.bushes.instantiate(map, 291);
     const trees = prefabs.trees.instantiate(map, 291);
@@ -735,6 +815,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         components: {
             ILightWithId: {
                 type: 0,
+                lightID: 13
             }
         },
         position: [0, -10000, 0],
@@ -764,6 +845,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         components: {
             ILightWithId: {
                 type: 0,
+                lightID: 14
             }
         },
         position: [0, -10000, 0],
@@ -903,6 +985,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
 
     // Fade house to black
     setEnvironmentFade(385, 9, 0, 1.5, 1/64);
+    toggleUiPanels(391, "off");
 
     // Remove house & fade out to sky
     house.destroyObject(402);
@@ -922,8 +1005,34 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         _DayNightCycle: 1,
     }, 402);
 
+    toggleUiPanels(411.5, "on");
     setEnvironmentFade(411, 2, 1.5, 0, 1/64);
-    const clouds = prefabs.clouds.instantiate(map, 410);
+    prefabs.cloudssky.instantiate(map, 410);
+    prefabs.airplane.instantiate(map, 410);
+    skybox.destroyObject(410);
+    prefabs.skyboxend.instantiate(map, 410);
+    materials.skyboxendmaterial.set(map, {
+        _DayNightCycle: 1,
+    }, 410);
+
+
+    setDayNightCycle(446, 498-446, 1, 0, 1/256, materials.skyboxendmaterial);
+    rm.environment(map, {
+        id: "Sun",
+        lookupMethod: "EndsWith",
+        track: "sunEnding",
+    })
+    rm.animateTrack(map, {
+        track: "sunEnding",
+        beat: 446,
+        duration: 498-446,
+        animation: {
+            localPosition: [
+                [0, 15.8, 110, 0],
+                [0, -5, 110, 1]
+            ]
+        }
+    })
 }
 
 await Promise.all([

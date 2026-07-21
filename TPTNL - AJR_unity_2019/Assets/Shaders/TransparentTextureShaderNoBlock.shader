@@ -14,6 +14,7 @@ Shader "Lekrkoekj/TransparentTextShader (not blocking other objects)"
         }
         Blend One OneMinusSrcColor
         ZWrite Off
+        ZTest Always
 
         Pass
         {

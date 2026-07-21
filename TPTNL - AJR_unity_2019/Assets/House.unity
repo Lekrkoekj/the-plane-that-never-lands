@@ -121,6 +121,25 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &125208224
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2702145143672652450, guid: d1300b47117f89a49b262cf61ee67b59,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556812155221268280, guid: d1300b47117f89a49b262cf61ee67b59,
+        type: 3}
+      propertyPath: m_Name
+      value: TransitionRunwayLeft
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d1300b47117f89a49b262cf61ee67b59, type: 3}
 --- !u!1 &193447888
 GameObject:
   m_ObjectHideFlags: 0
@@ -1011,6 +1030,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1001 &1299552085
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3697308457573169212, guid: e044cbc806ebeec4b90b0a61b1f3e67b,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 4165714359821965362, guid: e044cbc806ebeec4b90b0a61b1f3e67b,
+        type: 3}
+      propertyPath: m_Name
+      value: TransitionRunwayRight
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e044cbc806ebeec4b90b0a61b1f3e67b, type: 3}
 --- !u!1 &1310462578
 GameObject:
   m_ObjectHideFlags: 0
