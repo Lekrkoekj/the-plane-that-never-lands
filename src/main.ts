@@ -487,6 +487,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     const airplaneSeats = prefabs.seats.instantiate(map, 0);
     const planeClouds = prefabs.clouds.instantiate(map, 0);
     const cloudParticles = prefabs.cloudparticles.instantiate(map, 0);
+    const jackCabin = prefabs.jackcabin(map, 0);
     setMaterialOpacity(materials.cloudparticles, 0, 0, 0, 0, 1/16);
     setEnvironmentFade(2, 4, 1.5, 0, 1/64);
     
@@ -498,6 +499,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     airplaneRunway.destroyObject(90);
     airplaneSeats.destroyObject(90);
     planeClouds.destroyObject(90);
+    jackCabin.destroyObject(90);
     
     // Exit transition & load city street scene
     setMaterialOpacity(materials.cloudparticles, 101, 2, 1, 0, 1/16);
@@ -514,8 +516,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     const leafParticles = prefabs.leafparticles.instantiate(map, 168);
     const leafPiles = prefabs.leafpiles.instantiate(map, 100);
     const streetLeaves = prefabs.streetleaves.instantiate(map, 168);
-
-/// SPAWN JACKS
+    const jackStreet = prefabs.jackstreet.instantiate(map, 100);
 
 
     // Remove city street scene & start transition
@@ -532,6 +533,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     leafParticles.destroyObject(202);
     leafPiles.destroyObject(202);
     streetLeaves.destroyObject(202);
+    jackStreet.destroyObject(202);
 
     // Exit transition & load elevator scene
     setMaterialOpacity(materials.cloudparticles, 213, 2, 1, 0, 1/16);
@@ -541,6 +543,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     const elevatorVignette = prefabs.elevatorvignette.instantiate(map, 212)
     const elevatorDisplay = prefabs.animatedelevatordisplay.instantiate(map, 212)
     const elevatorShafts = prefabs.elevatorshafts.instantiate(map, 212);
+    const jackElevator = prefabs.jackelevator.instantiate(map, 212);
     
     /// Elevator Ceiling Lights
     rm.geometry(map, {
@@ -792,6 +795,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     elevatorDisplay.destroyObject(288);
     elevatorVignette.destroyObject(288);
     elevatorShafts.destroyObject(288);
+    jackElevator.destroyObject(288);
     setEnvironmentFade(280, 4, 0, 1.5, 1/64);
     setMaterialOpacity(materials.cloudparticles, 283, 4, 0, 1, 1/16);
     setMaterialOpacity(materials.transitionrunwaymaterial, 283, 4, 0, 1, 1/16);
@@ -809,6 +813,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     const runway = prefabs.runway.instantiate(map, 291);
     const lamps = prefabs.lamps.instantiate(map, 291);
     const sleepingParticles = prefabs.sleepingparticles.instantiate(map, 291);
+    const jackHouse = prefabs.jackhouse.instantiate(map, 291);
 
     // Bottom window light
     if(!chromaOnly) rm.geometry(map, {
@@ -1003,6 +1008,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     flashbackStreet.destroyObject(402);
     flashbackElevator.destroyObject(402);
     extraSleepingParticles.destroyObject(394);
+    jackHouse.destroyObject(402);
     runway.destroyObject(402);
     lamps.destroyObject(402);
     materials.skyboxmaterial.set(map, {
@@ -1012,6 +1018,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     toggleUiPanels(411.5, "on");
     prefabs.cloudssky.instantiate(map, 410);
     prefabs.airplane.instantiate(map, 410);
+    prefabs.jackplane.instantiate(map, 410);
     skybox.destroyObject(410);
     prefabs.skyboxend.instantiate(map, 410);
     materials.skyboxendmaterial.set(map, {
