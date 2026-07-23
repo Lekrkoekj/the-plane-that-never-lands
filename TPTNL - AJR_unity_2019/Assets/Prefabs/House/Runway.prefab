@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6480506755126856964}
   - component: {fileID: 7944553271414489761}
   - component: {fileID: 5306452376448988779}
+  - component: {fileID: 6717463988736254247}
   m_Layer: 0
   m_Name: Runway
   m_TagString: Untagged
@@ -79,3 +80,17 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &6717463988736254247
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5955080468090804158}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5495902117074765545, guid: ec17a11b08de38d4d95b389aaf2d248f, type: 3}

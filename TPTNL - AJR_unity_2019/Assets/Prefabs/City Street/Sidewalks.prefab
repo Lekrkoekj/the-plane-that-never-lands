@@ -1,5 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!64 &2536999057537650507
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2354804475578011269}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -462981019419857548, guid: 05671290dba409044b8da5216951a58e, type: 3}
 --- !u!1 &8069987726473554931
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,6 +167,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8db71e4a88cec1e448a8f3652ed20e97, type: 3}
+--- !u!1 &2354804475578011269 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8414849281915377687, guid: 8db71e4a88cec1e448a8f3652ed20e97,
+    type: 3}
+  m_PrefabInstance: {fileID: 6082813778214753938}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3163253846531347519 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9190822618976223917, guid: 8db71e4a88cec1e448a8f3652ed20e97,

@@ -2040,6 +2040,40 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15cf4934a19ff664fb24d269a7fb5458, type: 3}
+--- !u!1001 &2842615002823922601
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1261287464333020989, guid: 5feeda7ebe55bbf46840ab26b46f7472,
+        type: 3}
+      propertyPath: m_Name
+      value: JackElevator
+      objectReference: {fileID: 0}
+    - target: {fileID: 8338235288887220968, guid: 5feeda7ebe55bbf46840ab26b46f7472,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 8338235288887220968, guid: 5feeda7ebe55bbf46840ab26b46f7472,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8338235288887220968, guid: 5feeda7ebe55bbf46840ab26b46f7472,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -29.720001
+      objectReference: {fileID: 0}
+    - target: {fileID: 8338235288887220968, guid: 5feeda7ebe55bbf46840ab26b46f7472,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5feeda7ebe55bbf46840ab26b46f7472, type: 3}
 --- !u!1001 &3343384618496584036
 PrefabInstance:
   m_ObjectHideFlags: 0

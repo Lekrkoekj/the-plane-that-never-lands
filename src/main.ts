@@ -513,6 +513,10 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     const cityClouds = prefabs.cityclouds.instantiate(map, 100);
     const leafParticles = prefabs.leafparticles.instantiate(map, 168);
     const leafPiles = prefabs.leafpiles.instantiate(map, 100);
+    const streetLeaves = prefabs.streetleaves.instantiate(map, 168);
+
+/// SPAWN JACKS
+
 
     // Remove city street scene & start transition
     setMaterialOpacity(materials.cloudparticles, 200, 1.5, 0, 1, 1/16);
@@ -527,11 +531,12 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     cityClouds.destroyObject(202);
     leafParticles.destroyObject(202);
     leafPiles.destroyObject(202);
+    streetLeaves.destroyObject(202);
 
     // Exit transition & load elevator scene
     setMaterialOpacity(materials.cloudparticles, 213, 2, 1, 0, 1/16);
     setMaterialOpacity(materials.transitionrunwaymaterial, 212, 2, 1, 0, 1/16);
-    setEnvironmentFade(213, 2, 1.5, 0.7, 1/64);
+    setEnvironmentFade(213, 2, 1.5, 0, 1/64);
     const elevator = prefabs.elevator.instantiate(map, 212)
     const elevatorVignette = prefabs.elevatorvignette.instantiate(map, 212)
     const elevatorDisplay = prefabs.animatedelevatordisplay.instantiate(map, 212)
