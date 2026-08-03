@@ -487,7 +487,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     const airplaneSeats = prefabs.seats.instantiate(map, 0);
     const planeClouds = prefabs.clouds.instantiate(map, 0);
     const cloudParticles = prefabs.cloudparticles.instantiate(map, 0);
-    const jackCabin = prefabs.jackcabin(map, 0);
+    const jackCabin = prefabs.jackcabin.instantiate(map, 0);
     setMaterialOpacity(materials.cloudparticles, 0, 0, 0, 0, 1/16);
     setEnvironmentFade(2, 4, 1.5, 0, 1/64);
     
