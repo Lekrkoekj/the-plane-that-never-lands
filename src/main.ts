@@ -1047,6 +1047,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
 
 await Promise.all([
     doMap('ExpertPlusStandard'),
+    doMap('ExpertStandard'),
 ])
 
 // ----------- { OUTPUT } -----------

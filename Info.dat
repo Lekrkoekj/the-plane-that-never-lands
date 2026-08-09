@@ -84,8 +84,8 @@
           "_difficulty" : "Expert",
           "_difficultyRank" : 7,
           "_beatmapFilename" : "ExpertStandard.dat",
-          "_noteJumpMovementSpeed" : 12,
-          "_noteJumpStartBeatOffset" : 0,
+          "_noteJumpMovementSpeed" : 16,
+          "_noteJumpStartBeatOffset" : -0.125,
           "_beatmapColorSchemeIdx" : 0,
           "_environmentNameIdx" : 0,
           "_customData" : {
@@ -125,6 +125,18 @@
     }
   ],
   "_customData" : {
+    "_contributors" : [
+      {
+        "_name" : "Lekr",
+        "_role" : "Vivify, Expert-Easy Mapping",
+        "_iconPath" : "lekr.png"
+      },
+      {
+        "_name" : "steeak",
+        "_role" : "Expert+ Mapping, Chroma lighting",
+        "_iconPath" : "steeak.png"
+      }
+    ],
     "_editors" : {
       "_lastEditedBy" : "ChroMapper",
       "ChroMapper" : {

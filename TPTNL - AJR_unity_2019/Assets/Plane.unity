@@ -611,7 +611,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 972338167}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -1.82, y: 3.481, z: 4.9354}
+  m_LocalPosition: {x: -1.82, y: 3.481, z: 19.846}
   m_LocalScale: {x: 0.12843, y: 1.2230055, z: 0.12843}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1283,6 +1283,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Seats
+      objectReference: {fileID: 0}
+    - target: {fileID: 3386651211288703903, guid: d0c59c8d61a490f4faf7b8ef2a80d2ff,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704014712861078545, guid: d0c59c8d61a490f4faf7b8ef2a80d2ff,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7335347207875928180, guid: d0c59c8d61a490f4faf7b8ef2a80d2ff,
         type: 3}
