@@ -309,6 +309,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     if(!chromaOnly) {
         const shadowPositions = new Set();
         map.allNotes.forEach(note => {
+            if (note.beat > 395) return; // No shadows in sky scene.
             // Create a unique key for this shadow position
             const key = `${note.beat}-${note.x}`;
 
@@ -476,74 +477,89 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
 
 
     /// ---- { EVENTS } -----
+    if(!chromaOnly) {
+        prefabs.animatedlyrics.instantiate(map, 0);
+        prefabs.houselyrics.instantiate(map, 0);
 
-    prefabs.animatedlyrics.instantiate(map, 0);
-    prefabs.houselyrics.instantiate(map, 0);
-
-    // Load airplane environment
-    toggleUiPanels(0, "off");
-    const airplaneCabin = prefabs["airplane cabin"].instantiate(map, 0);
-    const airplaneRunway = prefabs["airplane runway"].instantiate(map, 0);
-    const airplaneSeats = prefabs.seats.instantiate(map, 0);
-    const planeClouds = prefabs.clouds.instantiate(map, 0);
-    const cloudParticles = prefabs.cloudparticles.instantiate(map, 0);
-    const jackCabin = prefabs.jackcabin.instantiate(map, 0);
-    setMaterialOpacity(materials.cloudparticles, 0, 0, 0, 0, 1/16);
-    setEnvironmentFade(2, 4, 1.5, 0, 1/64);
+        // Load airplane environment
+        toggleUiPanels(0, "off");
+        const airplaneCabin = prefabs["airplane cabin"].instantiate(map, 0);
+        const airplaneRunway = prefabs["airplane runway"].instantiate(map, 0);
+        const airplaneSeats = prefabs.seats.instantiate(map, 0);
+        const planeClouds = prefabs.clouds.instantiate(map, 0);
+        const cloudParticles = prefabs.cloudparticles.instantiate(map, 0);
+        const jackCabin = prefabs.jackcabin.instantiate(map, 0);
+        setMaterialOpacity(materials.cloudparticles, 0, 0, 0, 0, 1/16);
+        setEnvironmentFade(2, 4, 1.5, 0, 1/64);
+        
+        // Remove airplane scene & start transition
+        setMaterialOpacity(materials.cloudparticles, 88, 1.5, 0, 1, 1/16);
+        setEnvironmentFade(85.5, 4, 0, 1.5, 1/64);
+        setMaterialOpacity(materials.transitionrunwaymaterial, 88.5, 1.5, 0, 1, 1/16);
+        airplaneCabin.destroyObject(90);
+        airplaneRunway.destroyObject(90);
+        airplaneSeats.destroyObject(90);
+        planeClouds.destroyObject(90);
+        jackCabin.destroyObject(90);
+    }
     
-    // Remove airplane scene & start transition
-    setMaterialOpacity(materials.cloudparticles, 88, 1.5, 0, 1, 1/16);
-    setEnvironmentFade(85.5, 4, 0, 1.5, 1/64);
-    setMaterialOpacity(materials.transitionrunwaymaterial, 88.5, 1.5, 0, 1, 1/16);
-    airplaneCabin.destroyObject(90);
-    airplaneRunway.destroyObject(90);
-    airplaneSeats.destroyObject(90);
-    planeClouds.destroyObject(90);
-    jackCabin.destroyObject(90);
-    
-    // Exit transition & load city street scene
-    setMaterialOpacity(materials.cloudparticles, 101, 2, 1, 0, 1/16);
-    setMaterialOpacity(materials.transitionrunwaymaterial, 100, 2, 1, 0, 1/16);
-    setEnvironmentFade(101, 2, 1.5, 0.7, 1/64);
+    if(!chromaOnly) {
+        // Exit transition & load city street scene
+        setMaterialOpacity(materials.cloudparticles, 101, 2, 1, 0, 1/16);
+        setMaterialOpacity(materials.transitionrunwaymaterial, 100, 2, 1, 0, 1/16);
+        setEnvironmentFade(101, 2, 1.5, 0.7, 1/64);
 
-    const sidewalks = prefabs.sidewalks.instantiate(map, 100);
-    const cityBuildings = prefabs["city buildings"].instantiate(map, 100);
-    const treeFences = prefabs["tree fences"].instantiate(map, 100);
-    const road = prefabs.road.instantiate(map, 100);
-    const houses = prefabs.houses.instantiate(map, 100);
-    const cars = prefabs.cars.instantiate(map, 102);
-    const cityClouds = prefabs.cityclouds.instantiate(map, 100);
-    const leafParticles = prefabs.leafparticles.instantiate(map, 168);
-    const leafPiles = prefabs.leafpiles.instantiate(map, 100);
-    const streetLeaves = prefabs.streetleaves.instantiate(map, 168);
-    const jackStreet = prefabs.jackstreet.instantiate(map, 100);
+        const sidewalks = prefabs.sidewalks.instantiate(map, 100);
+        const cityBuildings = prefabs["city buildings"].instantiate(map, 100);
+        const treeFences = prefabs["tree fences"].instantiate(map, 100);
+        const road = prefabs.road.instantiate(map, 100);
+        const houses = prefabs.houses.instantiate(map, 100);
+        const cars = prefabs.cars.instantiate(map, 102);
+        const cityClouds = prefabs.cityclouds.instantiate(map, 100);
+        const leafParticles = prefabs.leafparticles.instantiate(map, 168);
+        const leafPiles = prefabs.leafpiles.instantiate(map, 100);
+        const streetLeaves = prefabs.streetleaves.instantiate(map, 168);
+        const jackStreet = prefabs.jackstreet.instantiate(map, 100);
 
 
-    // Remove city street scene & start transition
-    setMaterialOpacity(materials.cloudparticles, 200, 1.5, 0, 1, 1/16);
-    setEnvironmentFade(197.5, 4, 0, 1.5, 1/64);
-    setMaterialOpacity(materials.transitionrunwaymaterial, 200.5, 1.5, 0, 1, 1/16);
-    sidewalks.destroyObject(202);
-    cityBuildings.destroyObject(202);
-    treeFences.destroyObject(202);
-    road.destroyObject(202);
-    houses.destroyObject(202);
-    cars.destroyObject(202);
-    cityClouds.destroyObject(202);
-    leafParticles.destroyObject(202);
-    leafPiles.destroyObject(202);
-    streetLeaves.destroyObject(202);
-    jackStreet.destroyObject(202);
+        // Remove city street scene & start transition
+        setMaterialOpacity(materials.cloudparticles, 200, 1.5, 0, 1, 1/16);
+        setEnvironmentFade(197.5, 4, 0, 1.5, 1/64);
+        setMaterialOpacity(materials.transitionrunwaymaterial, 200.5, 1.5, 0, 1, 1/16);
+        sidewalks.destroyObject(202);
+        cityBuildings.destroyObject(202);
+        treeFences.destroyObject(202);
+        road.destroyObject(202);
+        houses.destroyObject(202);
+        cars.destroyObject(202);
+        cityClouds.destroyObject(202);
+        leafParticles.destroyObject(202);
+        leafPiles.destroyObject(202);
+        streetLeaves.destroyObject(202);
+        jackStreet.destroyObject(202);
+    }
 
-    // Exit transition & load elevator scene
-    setMaterialOpacity(materials.cloudparticles, 213, 2, 1, 0, 1/16);
-    setMaterialOpacity(materials.transitionrunwaymaterial, 212, 2, 1, 0, 1/16);
-    setEnvironmentFade(213, 2, 1.5, 0, 1/64);
-    const elevator = prefabs.elevator.instantiate(map, 212)
-    const elevatorVignette = prefabs.elevatorvignette.instantiate(map, 212)
-    const elevatorDisplay = prefabs.animatedelevatordisplay.instantiate(map, 212)
-    const elevatorShafts = prefabs.elevatorshafts.instantiate(map, 212);
-    const jackElevator = prefabs.jackelevator.instantiate(map, 212);
+    if(!chromaOnly) {
+        // Exit transition & load elevator scene
+        setMaterialOpacity(materials.cloudparticles, 213, 2, 1, 0, 1/16);
+        setMaterialOpacity(materials.transitionrunwaymaterial, 212, 2, 1, 0, 1/16);
+        setEnvironmentFade(213, 2, 1.5, 0, 1/64);
+        const elevator = prefabs.elevator.instantiate(map, 212)
+        const elevatorVignette = prefabs.elevatorvignette.instantiate(map, 212)
+        const elevatorDisplay = prefabs.animatedelevatordisplay.instantiate(map, 212)
+        const elevatorShafts = prefabs.elevatorshafts.instantiate(map, 212);
+        const jackElevator = prefabs.jackelevator.instantiate(map, 212);
+
+        // Remove elevator and fade to black
+        elevator.destroyObject(288)
+        elevatorDisplay.destroyObject(288);
+        elevatorVignette.destroyObject(288);
+        elevatorShafts.destroyObject(288);
+        jackElevator.destroyObject(288);
+        setEnvironmentFade(280, 4, 0, 1.5, 1/64);
+        setMaterialOpacity(materials.cloudparticles, 283, 4, 0, 1, 1/16);
+        setMaterialOpacity(materials.transitionrunwaymaterial, 283, 4, 0, 1, 1/16);
+    }
     
     /// Elevator Ceiling Lights
     rm.geometry(map, {
@@ -789,32 +805,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
             ]
         }
     })
-
-    // Remove elevator and fade to black
-    elevator.destroyObject(288)
-    elevatorDisplay.destroyObject(288);
-    elevatorVignette.destroyObject(288);
-    elevatorShafts.destroyObject(288);
-    jackElevator.destroyObject(288);
-    setEnvironmentFade(280, 4, 0, 1.5, 1/64);
-    setMaterialOpacity(materials.cloudparticles, 283, 4, 0, 1, 1/16);
-    setMaterialOpacity(materials.transitionrunwaymaterial, 283, 4, 0, 1, 1/16);
-
-    /// House environment
-    setMaterialOpacity(materials.cloudparticles, 294, 3, 1, 0, 1/16);
-    setEnvironmentFade(294, 4, 1.5, 0, 1/64);
-    setMaterialOpacity(materials.transitionrunwaymaterial, 293, 3, 1, 0, 1/16);
-    const house = prefabs.house.instantiate(map, 291);
-    const bushes = prefabs.bushes.instantiate(map, 291);
-    const trees = prefabs.trees.instantiate(map, 291);
-    const rocks = prefabs.rocks.instantiate(map, 291);
-    const grass = prefabs.grass.instantiate(map, 291);
-    const grassPlane = prefabs.grassplane.instantiate(map, 291);
-    const runway = prefabs.runway.instantiate(map, 291);
-    const lamps = prefabs.lamps.instantiate(map, 291);
-    const sleepingParticles = prefabs.sleepingparticles.instantiate(map, 291);
-    const jackHouse = prefabs.jackhouse.instantiate(map, 291);
-
+    
     // Bottom window light
     if(!chromaOnly) rm.geometry(map, {
         type: "Cube",
@@ -835,7 +826,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     rm.animateTrack(map, {
         track: "bottomWindowLight",
         beat: 291,
-        duration: 115,
+        duration: 104,
         animation: {
             position: [
                 [-8.465, 2, 12.92, 0],
@@ -865,7 +856,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
     rm.animateTrack(map, {
         track: "doorLight",
         beat: 291,
-        duration: 115,
+        duration: 104,
         animation: {
             position: [
                 [-7.1572, 2.0895, 15.1953, 0],
@@ -977,72 +968,90 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         scale: [0.3797671, 0.2093542, 0.3797671]
     })
 
-    setDayNightCycle(291, 0.5, 0.5, 0.5, 1/4);
-    materials.skyboxmaterial.set(map, {
-        _DayNightCycle: 0,
-    }, 291);
+    if(!chromaOnly) {
+        /// House environment
+        setMaterialOpacity(materials.cloudparticles, 294, 3, 1, 0, 1/16);
+        setEnvironmentFade(294, 4, 1.5, 0, 1/64);
+        setMaterialOpacity(materials.transitionrunwaymaterial, 293, 3, 1, 0, 1/16);
+        const house = prefabs.house.instantiate(map, 291);
+        const bushes = prefabs.bushes.instantiate(map, 291);
+        const trees = prefabs.trees.instantiate(map, 291);
+        const rocks = prefabs.rocks.instantiate(map, 291);
+        const grass = prefabs.grass.instantiate(map, 291);
+        const grassPlane = prefabs.grassplane.instantiate(map, 291);
+        const runway = prefabs.runway.instantiate(map, 291);
+        const lamps = prefabs.lamps.instantiate(map, 291);
+        const sleepingParticles = prefabs.sleepingparticles.instantiate(map, 291);
+        const jackHouse = prefabs.jackhouse.instantiate(map, 291);
 
-    // Cameras
-    const screenshotters = prefabs.screenshotters.instantiate(map, 0);
-    screenshotters.destroyObject(396);
-    
-    const flashbackAirplaneCabin = prefabs.flashbackairplanecabin.instantiate(map, 330.5);
-    const flashbackStreet = prefabs.flashbackstreet.instantiate(map, 338.5)
-    const flashbackElevator = prefabs.flashbackelevator.instantiate(map, 347);
-    const extraSleepingParticles = prefabs.sleepingparticlesextra.instantiate(map, 354.5);
+        setDayNightCycle(291, 0.5, 0.5, 0.5, 1/4);
+        materials.skyboxmaterial.set(map, {
+            _DayNightCycle: 0,
+        }, 291);
 
-    setDayNightCycle(385, 4, 0.5, 0, 1/16);
+        // Cameras
+        const screenshotters = prefabs.screenshotters.instantiate(map, 0);
+        screenshotters.destroyObject(396);
+        
+        const flashbackAirplaneCabin = prefabs.flashbackairplanecabin.instantiate(map, 330.5);
+        const flashbackStreet = prefabs.flashbackstreet.instantiate(map, 338.5)
+        const flashbackElevator = prefabs.flashbackelevator.instantiate(map, 347);
+        const extraSleepingParticles = prefabs.sleepingparticlesextra.instantiate(map, 354.5);
 
-    // Fade house to black
-    setEnvironmentFade(385, 9, 0, 1.5, 1/64);
+        setDayNightCycle(385, 4, 0.5, 0, 1/16);
 
-    // Remove house & fade out to sky
-    house.destroyObject(402);
-    bushes.destroyObject(402);
-    trees.destroyObject(402);
-    rocks.destroyObject(402);
-    grass.destroyObject(402);
-    grassPlane.destroyObject(402);
-    sleepingParticles.destroyObject(394);
-    flashbackAirplaneCabin.destroyObject(402);
-    flashbackStreet.destroyObject(402);
-    flashbackElevator.destroyObject(402);
-    extraSleepingParticles.destroyObject(394);
-    jackHouse.destroyObject(402);
-    runway.destroyObject(402);
-    lamps.destroyObject(402);
-    materials.skyboxmaterial.set(map, {
-        _DayNightCycle: 1,
-    }, 402);
-    setEnvironmentFade(411, 2, 1.5, 0, 1/64);
-    toggleUiPanels(411.5, "on");
-    prefabs.cloudssky.instantiate(map, 410);
-    prefabs.airplane.instantiate(map, 410);
-    prefabs.jackplane.instantiate(map, 410);
-    skybox.destroyObject(410);
-    prefabs.skyboxend.instantiate(map, 410);
-    materials.skyboxendmaterial.set(map, {
-        _DayNightCycle: 1,
-    }, 410);
+        // Fade house to black
+        setEnvironmentFade(385, 9, 0, 1.5, 1/64);
+
+        // Remove house & fade out to sky
+        house.destroyObject(402);
+        bushes.destroyObject(402);
+        trees.destroyObject(402);
+        rocks.destroyObject(402);
+        grass.destroyObject(402);
+        grassPlane.destroyObject(402);
+        sleepingParticles.destroyObject(394);
+        flashbackAirplaneCabin.destroyObject(394);
+        flashbackStreet.destroyObject(394);
+        flashbackElevator.destroyObject(394);
+        extraSleepingParticles.destroyObject(394);
+        jackHouse.destroyObject(395);
+        runway.destroyObject(395);
+        lamps.destroyObject(395);
+        materials.skyboxmaterial.set(map, {
+            _DayNightCycle: 1,
+        }, 402);
+
+        setEnvironmentFade(411, 2, 1.5, 0, 1/64);
+        toggleUiPanels(411.5, "on");
+        prefabs.cloudssky.instantiate(map, 410);
+        prefabs.airplane.instantiate(map, 410);
+        prefabs.jackplane.instantiate(map, 410);
+        skybox.destroyObject(410);
+        prefabs.skyboxend.instantiate(map, 410);
+        materials.skyboxendmaterial.set(map, {
+            _DayNightCycle: 1,
+        }, 410);
 
 
-    setDayNightCycle(446, 498-446, 1, 0, 1/256, materials.skyboxendmaterial);
-    rm.environment(map, {
-        id: "Sun",
-        lookupMethod: "EndsWith",
-        track: "sunEnding",
-    })
-    rm.animateTrack(map, {
-        track: "sunEnding",
-        beat: 446,
-        duration: 498-446,
-        animation: {
-            localPosition: [
-                [0, 15.8, 110, 0],
-                [0, -5, 110, 1]
-            ]
-        }
-    })
+        setDayNightCycle(446, 498-446, 1, 0, 1/256, materials.skyboxendmaterial);
+        rm.environment(map, {
+            id: "Sun",
+            lookupMethod: "EndsWith",
+            track: "sunEnding",
+        })
+        rm.animateTrack(map, {
+            track: "sunEnding",
+            beat: 446,
+            duration: 498-446,
+            animation: {
+                localPosition: [
+                    [0, 15.8, 110, 0],
+                    [0, -5, 110, 1]
+                ]
+            }
+        })
+    }
 }
 
 await Promise.all([
