@@ -83,7 +83,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         const airplaneHeightOffset = -0.3;
         const cityDepthOffset = 5;
         const d = 500;
-        if(side == "left") {
+        if(side == "left") { /// LEFT LASERS
             for(let i = 0; i < 9; i++) {
                 rm.animateTrack(map, {
                     track: `laser_L${i}`,
@@ -111,13 +111,13 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
                             [-3.6, -2.1, cityDepthOffset * (i + 1), 285/d],              // ^
                             [-20 + 1.76 * (i + 1), -2.1, 10 + 2 * (i + 1), 286/d],       // House
                             [-20 + 1.76 * (i + 1), -2.1, 10 + 2 * (i + 1), 409/d],       // House
-                            [-3, -4, cityDepthOffset * (i + 1), 410/d]                 // Sky
+                            [-2.9, -4, cityDepthOffset * (i + 1), 410/d]                 // Sky
                         ]
                     }
                 });
             }
         }
-        else {
+        else { /// RIGHT LASERS
             for(let i = 0; i < 9; i++) {
                 rm.animateTrack(map, {
                     track: `laser_R${i}`,
@@ -145,7 +145,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
                             [3.6, -2.1, cityDepthOffset * (i + 1), 285/d],              // ^
                             [20 - 1.76 * (i + 1), -2.1, 10 + 2 * (i + 1), 286/d],       // House
                             [20 - 1.76 * (i + 1), -2.1, 10 + 2 * (i + 1), 409/d],       // House
-                            [2.9, -4, cityDepthOffset * (i + 1), 410/d]                   // Sky
+                            [2.5, -4, cityDepthOffset * (i + 1), 410/d]                 // Sky
                         ]
                     }
                 });
@@ -174,6 +174,8 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
             }
         })
     }
+
+    
 
     const lightingMaterialsList = [
         materials.grassplanematerial,
@@ -1034,7 +1036,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         }, 410);
 
 
-        setDayNightCycle(446, 498-446, 1, 0, 1/256, materials.skyboxendmaterial);
+        setDayNightCycle(446, 504-446, 1, 0, 1/256, materials.skyboxendmaterial);
         rm.environment(map, {
             id: "Sun",
             lookupMethod: "EndsWith",
@@ -1060,6 +1062,11 @@ await Promise.all([
     doMap('HardStandard'),
     doMap('NormalStandard'),
     doMap('EasyStandard'),
+    doMap('ExpertPlusLawless', true),
+    doMap('ExpertLawless', true),
+    doMap('HardLawless', true),
+    doMap('NormalLawless', true),
+    doMap('EasyLawless', true),
 ])
 
 // ----------- { OUTPUT } -----------
@@ -1069,3 +1076,6 @@ pipeline.export({
 })
 
 console.log("Done!")
+
+/// End of city scene, flickering lights
+    // fade out elevator
