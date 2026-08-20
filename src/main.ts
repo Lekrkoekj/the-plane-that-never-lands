@@ -474,8 +474,6 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         "Mountains"
     ], "Contains")
 
-
-
     /// ---- { EVENTS } -----
     if(!chromaOnly) {
         prefabs.animatedlyrics.instantiate(map, 0);

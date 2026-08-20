@@ -6,6 +6,7 @@ Shader "Unlit Flashback Cutout"
     {
         _Color ("Color Day", Color) = (1,1,1,1)
         _ColorNight ("Color Night", Color) = (1,1,1,1)
+        _Tex ("Texture", 2D) = "white" {}
         _Bloom ("Glow", Range (0, 1)) = 0
         _DitherMaskScale("Dither Mask Scale", Float) = 40
         _DitherMask("Dither Mask", 2D) = "black" {}
@@ -17,37 +18,6 @@ Shader "Unlit Flashback Cutout"
         _VignetteColor ("Vignette Color", Color) = (1,1,1,1)
         _VignetteSize ("Vignette Size", Range(0, 2)) = 0.8
         _VignetteSmoothness ("Vignette Smoothness", Range(0.001, 1)) = 0.1
-
-        _Tex ("Texture 1", 2D) = "white" {}
-        _Tex2 ("Texture 2", 2D) = "white" {}
-        _Tex3 ("Texture 3", 2D) = "white" {}
-        _Tex4 ("Texture 4", 2D) = "white" {}
-        _Tex5 ("Texture 5", 2D) = "white" {}
-        _Tex6 ("Texture 6", 2D) = "white" {}
-        _Tex7 ("Texture 7", 2D) = "white" {}
-        _Tex8 ("Texture 8", 2D) = "white" {}
-        _Tex9 ("Texture 9", 2D) = "white" {}
-        _Tex10 ("Texture 10", 2D) = "white" {}
-        _Tex11 ("Texture 11", 2D) = "white" {}
-        _Tex12 ("Texture 12", 2D) = "white" {}
-        _Tex13 ("Texture 13", 2D) = "white" {}
-        _Tex14 ("Texture 14", 2D) = "white" {}
-        _Tex15 ("Texture 15", 2D) = "white" {}
-        _Tex16 ("Texture 16", 2D) = "white" {}
-        _Tex17 ("Texture 17", 2D) = "white" {}
-        _Tex18 ("Texture 18", 2D) = "white" {}
-        _Tex19 ("Texture 19", 2D) = "white" {}
-        _Tex20 ("Texture 20", 2D) = "white" {}
-        _Tex21 ("Texture 21", 2D) = "white" {}
-        _Tex22 ("Texture 22", 2D) = "white" {}
-        _Tex23 ("Texture 23", 2D) = "white" {}
-        _Tex24 ("Texture 24", 2D) = "white" {}
-        _Tex25 ("Texture 25", 2D) = "white" {}
-        _Tex26 ("Texture 26", 2D) = "white" {}
-        _Tex27 ("Texture 27", 2D) = "white" {}
-        _Tex28 ("Texture 28", 2D) = "white" {}
-        _Tex29 ("Texture 29", 2D) = "white" {}
-        _Tex30 ("Texture 30", 2D) = "white" {}
     }
     SubShader
     {
@@ -91,23 +61,15 @@ Shader "Unlit Flashback Cutout"
             float _Cutout;
             float _DayNightCycle;
 
-            // Vignette uniforms
+            // Vignette Uniforms
             float4 _VignetteColor;
             float _VignetteSize;
             float _VignetteSmoothness;
 
-            // so many textures lmao
-            Texture2D _Tex;   Texture2D _Tex2;  Texture2D _Tex3;  Texture2D _Tex4;  Texture2D _Tex5;
-            Texture2D _Tex6;   Texture2D _Tex7;  Texture2D _Tex8;  Texture2D _Tex9;  Texture2D _Tex10;
-            Texture2D _Tex11;  Texture2D _Tex12; Texture2D _Tex13; Texture2D _Tex14; Texture2D _Tex15;
-            Texture2D _Tex16;  Texture2D _Tex17; Texture2D _Tex18; Texture2D _Tex19; Texture2D _Tex20;
-            Texture2D _Tex21;  Texture2D _Tex22; Texture2D _Tex23; Texture2D _Tex24; Texture2D _Tex25;
-            Texture2D _Tex26;  Texture2D _Tex27; Texture2D _Tex28; Texture2D _Tex29; Texture2D _Tex30;
-
+            sampler2D _Tex;
             float4 _Tex_ST;
-            SamplerState sampler_Tex;
             
-            v2f vert (appdata_full v)
+            v2f vert (appdata v)
             {
                 v2f o;
 
@@ -116,98 +78,16 @@ Shader "Unlit Flashback Cutout"
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.texcoord;
+                o.uv = v.uv;
                 o.color = v.color;
-                o.scrPos = ComputeScreenPos(v.vertex);
+                o.scrPos = ComputeScreenPos(o.vertex);
                 return o;
             }
             
             fixed4 frag (v2f i) : SV_Target
             {
-                float steppedTime = floor(_Time.y * 10.0);
-                int frameIndex = (int)fmod(steppedTime, 30.0);
-
-                // Compute the shared UV coordinates once up front
-                float2 sharedUV = TRANSFORM_TEX(i.uv, _Tex);
-
-                fixed4 texSample = fixed4(1,1,1,1);
-                
-                // Binary tree to sample textures using the shared sampler state
-                if (frameIndex < 15)
-                {
-                    if (frameIndex < 8)
-                    {
-                        if (frameIndex < 4)
-                        {
-                            if (frameIndex == 0)      texSample = _Tex.Sample(sampler_Tex, sharedUV);
-                            else if (frameIndex == 1) texSample = _Tex2.Sample(sampler_Tex, sharedUV);
-                            else if (frameIndex == 2) texSample = _Tex3.Sample(sampler_Tex, sharedUV);
-                            else                      texSample = _Tex4.Sample(sampler_Tex, sharedUV);
-                        }
-                        else
-                        {
-                            if (frameIndex == 4)      texSample = _Tex5.Sample(sampler_Tex, sharedUV);
-                            else if (frameIndex == 5) texSample = _Tex6.Sample(sampler_Tex, sharedUV);
-                            else if (frameIndex == 6) texSample = _Tex7.Sample(sampler_Tex, sharedUV);
-                            else                      texSample = _Tex8.Sample(sampler_Tex, sharedUV);
-                        }
-                    }
-                    else
-                    {
-                        if (frameIndex < 12)
-                        {
-                            if (frameIndex == 8)      texSample = _Tex9.Sample(sampler_Tex, sharedUV);
-                            else if (frameIndex == 9) texSample = _Tex10.Sample(sampler_Tex, sharedUV);
-                            else if (frameIndex == 10) texSample = _Tex11.Sample(sampler_Tex, sharedUV);
-                            else                       texSample = _Tex12.Sample(sampler_Tex, sharedUV);
-                        }
-                        else
-                        {
-                            if (frameIndex == 12)     texSample = _Tex13.Sample(sampler_Tex, sharedUV);
-                            else if (frameIndex == 13) texSample = _Tex14.Sample(sampler_Tex, sharedUV);
-                            else                       texSample = _Tex15.Sample(sampler_Tex, sharedUV);
-                        }
-                    }
-                }
-                else
-                {
-                    if (frameIndex < 23)
-                    {
-                        if (frameIndex < 19)
-                        {
-                            if (frameIndex == 15)     texSample = _Tex16.Sample(sampler_Tex, sharedUV);
-                            else if (frameIndex == 16) texSample = _Tex17.Sample(sampler_Tex, sharedUV);
-                            else if (frameIndex == 17) texSample = _Tex18.Sample(sampler_Tex, sharedUV);
-                            else                       texSample = _Tex19.Sample(sampler_Tex, sharedUV);
-                        }
-                        else
-                        {
-                            if (frameIndex == 19)     texSample = _Tex20.Sample(sampler_Tex, sharedUV);
-                            else if (frameIndex == 20) texSample = _Tex21.Sample(sampler_Tex, sharedUV);
-                            else if (frameIndex == 21) texSample = _Tex22.Sample(sampler_Tex, sharedUV);
-                            else                       texSample = _Tex23.Sample(sampler_Tex, sharedUV);
-                        }
-                    }
-                    else
-                    {
-                        if (frameIndex < 27)
-                        {
-                            if (frameIndex == 23)     texSample = _Tex24.Sample(sampler_Tex, sharedUV);
-                            else if (frameIndex == 24) texSample = _Tex25.Sample(sampler_Tex, sharedUV);
-                            else if (frameIndex == 25) texSample = _Tex26.Sample(sampler_Tex, sharedUV);
-                            else                       texSample = _Tex27.Sample(sampler_Tex, sharedUV);
-                        }
-                        else
-                        {
-                            if (frameIndex == 27)     texSample = _Tex28.Sample(sampler_Tex, sharedUV);
-                            else if (frameIndex == 28) texSample = _Tex29.Sample(sampler_Tex, sharedUV);
-                            else                       texSample = _Tex30.Sample(sampler_Tex, sharedUV);
-                        }
-                    }
-                }
-
-                // Apply remaining color/cutout/dither math
-                fixed4 col = ((_Color * _DayNightCycle) + (_ColorNight * (1.0 - _DayNightCycle))) * texSample;
+                float2 uvTransformed = TRANSFORM_TEX(i.uv, _Tex);
+                fixed4 col = ((_Color * _DayNightCycle) + (_ColorNight * (1.0 - _DayNightCycle))) * tex2D(_Tex, uvTransformed);
 
                 if (col.a < _Cutout) discard;
 
@@ -216,17 +96,10 @@ Shader "Unlit Flashback Cutout"
 
                 if (tex2D(_DitherMask, ase_screenPosNorm.xy * _ScreenParams.xy * _DitherMaskScale).r >= _Alpha * i.color.a) discard;
 
-                // --- Rectangular UV Vignette Calculation (16:9 Aware) ---
-                // Calculate distance from center (0.5, 0.5) scaled to 16:9 box bounds
-                float2 d = abs(sharedUV - 0.5) * 2.0;
-                
-                // Determine edge boundary coordinates based on custom aspect ratio
+                // --- Rectangular UV Vignette Calculation ---
+                float2 d = abs(i.uv - 0.5) * 2.0;
                 float edgeFactor = max(d.x, d.y);
-                
-                // Calculate the blend factor via smoothstep transition
                 float vignetteFactor = smoothstep(_VignetteSize - _VignetteSmoothness, _VignetteSize, edgeFactor);
-                
-                // Blend colors directly without modifying alpha
                 col.rgb = lerp(col.rgb, _VignetteColor.rgb, vignetteFactor);
 
                 col *= float4(i.color.rgb, 0.0);
