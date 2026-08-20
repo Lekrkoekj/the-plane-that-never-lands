@@ -175,8 +175,6 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         })
     }
 
-    
-
     const lightingMaterialsList = [
         materials.grassplanematerial,
         materials.grassmaterial3,
@@ -974,7 +972,7 @@ async function doMap(file: rm.DIFFICULTY_NAME, chromaOnly: boolean = false) {
         /// House environment
         setMaterialOpacity(materials.cloudparticles, 294, 3, 1, 0, 1/16);
         setEnvironmentFade(294, 4, 1.5, 0, 1/64);
-        setMaterialOpacity(materials.transitionrunwaymaterial, 293, 3, 1, 0, 1/16);
+        setMaterialOpacity(materials.transitionrunwaymaterial, 293, 2, 1, 0, 1/16);
         const house = prefabs.house.instantiate(map, 291);
         const bushes = prefabs.bushes.instantiate(map, 291);
         const trees = prefabs.trees.instantiate(map, 291);
